@@ -1,0 +1,206 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!--
+@Versao: 2.5
+@Data: 2013-06-18
+-->
+<schema xmlns="http://www.w3.org/2001/XMLSchema"
+	xmlns:sngpc="urn:sngpc-schema" targetNamespace="urn:sngpc-schema"
+	elementFormDefault="qualified">
+
+  <!-- Schema com os tipos complexos de dados, construídos a partir dos tipos simples -->
+  <include schemaLocation="sngpcSimpleTypes.xsd"></include>
+	<!--
+	<complexType name="ct_Medicamento">
+		<sequence>
+		  <element name="registroMSMedicamento" type="sngpc:st_RegistroMS" />
+			<element name="numeroLoteMedicamento" type="sngpc:st_Lote" />
+			<element name="quantidadeMedicamento" type="sngpc:st_QuantidadeMedicamento" />
+			<element name="unidadeMedidaMedicamento" type="sngpc:st_UnidadeMedidaMedicamento" />
+		</sequence>
+	</complexType>
+  -->
+  <complexType name="ct_Medicamento">
+    <sequence>
+      <element name="registroMSMedicamento" type="sngpc:st_RegistroMS" />
+      <element name="numeroLoteMedicamento" type="sngpc:st_Lote" />
+      <element name="quantidadeMedicamento" type="sngpc:st_QuantidadeMedicamento" />
+      <element name="unidadeMedidaMedicamento" type="sngpc:st_UnidadeMedidaMedicamento" />
+    </sequence>
+  </complexType>
+  
+  <complexType name="ct_MedicamentoVenda">
+    <sequence>
+      <element name ="usoProlongado" type="sngpc:st_SimNaoNull" />
+      <element name="registroMSMedicamento" type="sngpc:st_RegistroMS" />
+      <element name="numeroLoteMedicamento" type="sngpc:st_Lote" />
+      <element name="quantidadeMedicamento" type="sngpc:st_QuantidadeMedicamento" />
+      <element name="unidadeMedidaMedicamento" type="sngpc:st_UnidadeMedidaMedicamento" />
+    </sequence>
+  </complexType>
+  
+  <complexType name="ct_MedicamentoEntrada">
+    <sequence>
+      <element name="classeTerapeutica" type="sngpc:st_classeTerapeutica" />
+      <element name="registroMSMedicamento" type="sngpc:st_RegistroMS" />
+      <element name="numeroLoteMedicamento" type="sngpc:st_Lote" />
+      <element name="quantidadeMedicamento" type="sngpc:st_QuantidadeMedicamento" />
+      <element name="unidadeMedidaMedicamento" type="sngpc:st_UnidadeMedidaMedicamento" />
+    </sequence>
+  </complexType>
+
+	<complexType name="ct_NotaFiscal">
+		<sequence>
+			<element name="numeroNotaFiscal" type="sngpc:st_NumeroNotaFiscal" />
+			<element name="tipoOperacaoNotaFiscal" type="sngpc:st_TipoOperacaoNotaFiscal" />
+			<element name="dataNotaFiscal" type="sngpc:st_data" />
+			<element name="cnpjOrigem" type="sngpc:st_CNPJ" />
+			<element name="cnpjDestino" type="sngpc:st_CNPJ" />
+		</sequence>
+	</complexType>
+
+  <complexType name="ct_MedicamentoSaidaTransformacao">
+    <sequence>
+      <element name="registroMSMedicamento" type="sngpc:st_RegistroMS" />
+      <element name="numeroLoteMedicamento" type="sngpc:st_Lote" />
+      <element name="quantidadeInsumo" type="sngpc:st_QuantidadeInsumo" />
+      <element name="unidadeDeMedidaDoInsumo" type="sngpc:st_TipoUnidadeInsumo" />
+    </sequence>
+  </complexType>
+
+	<complexType name="ct_MedicamentoTransformacao">
+    <sequence>
+      <!--<element name="classeTerapeutica" type = "sngpc:st_classeTerapeutica" />-->
+      <element name="registroMSMedicamento" type="sngpc:st_RegistroMS" />
+      <element name="numeroLoteMedicamento" type="sngpc:st_Lote" />
+      <element name="quantidadeMedicamento" type="sngpc:st_QuantidadeMedicamento" />
+      <element name="unidadeMedidaMedicamento" type="sngpc:st_UnidadeMedidaMedicamento" />
+      <element name="quantidadeInsumo" type="sngpc:st_QuantidadeInsumo" />
+      <element name="unidadeDeMedidaDoInsumo" type="sngpc:st_TipoUnidadeInsumo" />
+    </sequence>
+  </complexType>
+
+ <complexType name="ct_MedicamentoTransformacaoVenda">
+    <sequence>
+      <element name="usoProlongado" type="sngpc:st_SimNaoNull"/>
+      <element name="registroMSMedicamento" type="sngpc:st_RegistroMS" />
+      <element name="numeroLoteMedicamento" type="sngpc:st_Lote" />
+      <element name="quantidadeDeInsumoPorUnidadeFarmacotecnica" type="sngpc:st_QuantidadeDeInsumoPorUnidadeFarmacotecnica" />
+      <element name="unidadeDeMedidaDoInsumo" type="sngpc:st_TipoUnidadeInsumo" />
+      <element name="unidadeFarmacotecnica" type="sngpc:st_TipoUnidadeFarmacotecnica" />
+      <element name="quantidadeDeUnidadesFarmacotecnicas" type="sngpc:st_QuantidadeDeUnidadesFarmacotecnicas" />
+    </sequence>
+  </complexType>
+
+  
+  <complexType name="ct_Insumo">
+    <sequence>
+      <element name="codigoInsumo" type="sngpc:st_CodigoDCB" />
+      <element name="numeroLoteInsumo" type="sngpc:st_Lote" />
+      <element name="insumoCNPJFornecedor" type="sngpc:st_CNPJ" />
+    </sequence>
+  </complexType>
+  
+  <complexType name="ct_InsumoEntrada">
+    <sequence>
+      <element name="insumoEntrada" type="sngpc:ct_Insumo" />
+      <element name="quantidadeInsumoEntrada" type="sngpc:st_QuantidadeInsumo" />
+      <element name="tipoUnidadeEntrada" type="sngpc:st_TipoUnidadeInsumo" />
+    </sequence>
+  </complexType>
+  <complexType name="ct_InsumoTransferencia">
+    <sequence>
+      <element name="insumoTransferencia" type="sngpc:ct_Insumo" />
+      <element name="quantidadeInsumoTransferencia" type="sngpc:st_QuantidadeInsumo" />
+      <element name="tipoUnidadeTransferencia" type="sngpc:st_TipoUnidadeInsumo" />
+    </sequence>
+  </complexType>
+  <complexType name="ct_InsumoPerda">
+    <sequence>
+      <element name="insumoPerda" type="sngpc:ct_Insumo" />
+      <element name="quantidadeInsumoPerda" type="sngpc:st_QuantidadeInsumo" />
+      <element name="tipoUnidadePerda" type="sngpc:st_TipoUnidadeInsumo" />
+    </sequence>
+  </complexType>
+  <complexType name="ct_InsumoVendaAoConsumidor">
+    <sequence>
+      <element name = "usoProlongado" type = "sngpc:st_SimNaoNull"/>
+      <element name="insumoVendaAoConsumidor" type="sngpc:ct_Insumo" />
+      <!-- A quantidade de insumo por unidade farmacotécnica. Pex: 30mg/1 ml ou por cápsula  -->
+      <element name="quantidadeDeInsumoPorUnidadeFarmacotecnica" type="sngpc:st_QuantidadeDeInsumoPorUnidadeFarmacotecnica" />
+      <!--  Se é medida em g, ml ou Unidade  (U) -->
+      <element name="unidadeDeMedidaDoInsumo" type="sngpc:st_TipoUnidadeInsumo" />
+      <!-- A Unidade farmacotécnica de referência. Pode ser: cápsula, comprimido, mililitro ou grama -->
+      <element name="unidadeFarmacotecnica" type="sngpc:st_TipoUnidadeFarmacotecnica" />
+      <!-- Quantas unidades farmacotécnicas estão sendo vendidas (300 mL ou 50 cápsulas) -->
+      <element name="quantidadeDeUnidadesFarmacotecnicas" type="sngpc:st_QuantidadeDeUnidadesFarmacotecnicas" />      
+    </sequence>
+  </complexType>
+  <complexType name="ct_Comprador">
+    <sequence>
+      <element name="nomeComprador" type="sngpc:st_Nome" />
+      <element name="tipoDocumento" type="sngpc:st_TipoDocumento" />
+      <element name="numeroDocumento" type="sngpc:st_NumeroDocumento" />
+      <element name="orgaoExpedidor" type="sngpc:st_OrgaoExpedidor" />
+      <element name="UFEmissaoDocumento" type="sngpc:st_UF" />
+    </sequence>
+  </complexType>
+  <complexType name="ct_Prescritor">
+    <sequence>
+      <element name="nomePrescritor" type="sngpc:st_Nome" />
+      <element name="numeroRegistroProfissional" type="sngpc:st_NumeroDocumento" />
+      <element name="conselhoProfissional" type="sngpc:st_ConselhoProfissional" />
+      <element name="UFConselho" type="sngpc:st_UF" />
+    </sequence>
+  </complexType>
+  <complexType name="ct_Retorno">
+    <sequence>
+      <element name="hash" type="sngpc:st_Nome" />
+      <element name="dataInicioRetorno" type="sngpc:st_data" />
+      <element name="dataFimRetorno" type="sngpc:st_data" />
+      <element name="dataTransmissao" type="sngpc:st_data" />
+      <element name="dataValidacao" type="sngpc:st_data" />
+      <sequence>
+        <element name="descricaoValidacao" type="sngpc:st_DescricaoValidacao" minOccurs="0" maxOccurs="unbounded" />
+      </sequence>
+      <element name="validado" type="sngpc:st_simNao" />
+    </sequence>
+  </complexType>
+  
+  <complexType name="ct_paciente">
+    <sequence>
+      <element name="nome" type="sngpc:st_Nome" />
+      <element name="idade" type="sngpc:st_Idade" />
+      <element name="unidadeIdade" type="sngpc:st_UnidadeIdade" />
+      <element name="sexo" type="sngpc:st_Sexo" />
+      <element name="cid" type="sngpc:st_Cid" />
+    </sequence>    
+  </complexType>
+  
+  <complexType name="ct_InsumosEntrada">
+    <sequence>
+      <element name="insumoEntrada" type="sngpc:ct_InsumoBasico" />
+   </sequence>
+  </complexType>
+  
+  <complexType name="ct_InsumoBasico">
+    <sequence>
+      <element name="codigoInsumo" type="sngpc:st_CodigoDCB" />
+      <element name="numeroLoteInsumo" type="sngpc:st_Lote" />
+	    <element name="insumoCNPJFornecedor" type="sngpc:st_CNPJ" />
+      <element name="quantidadeInsumo" type="sngpc:st_QuantidadeInsumo" />
+      <element name="tipoUnidade" type="sngpc:st_TipoUnidadeInsumo" />
+    </sequence>
+  </complexType>
+  
+  <complexType name="ct_InsumoBasicoEntrada">
+    <sequence>
+      <element name="classeTerapeutica" type="sngpc:st_classeTerapeutica" />
+      <element name="codigoInsumo" type="sngpc:st_CodigoDCB" />
+      <element name="numeroLoteInsumo" type="sngpc:st_Lote" />
+      <element name="insumoCNPJFornecedor" type="sngpc:st_CNPJ" />
+      <element name="quantidadeInsumo" type="sngpc:st_QuantidadeInsumo" />
+      <element name="tipoUnidade" type="sngpc:st_TipoUnidadeInsumo" />
+    </sequence>
+  </complexType>
+  
+</schema>

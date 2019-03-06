@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="iso-8859-1" ?>
+<!--
+@Versao: 2.5
+@Data: 2013-06-18
+-->
+<schema xmlns="http://www.w3.org/2001/XMLSchema" xmlns:sngpc="urn:sngpc-schema"
+    targetNamespace="urn:sngpc-schema" elementFormDefault="qualified">
+  <include schemaLocation="sngpcSimpleTypes.xsd" />
+  <include schemaLocation="sngpcComplexTypes.xsd" />
+  <include schemaLocation="sngpcOperacoes.xsd" />
+  <!-- Definicao da mensagem -->
+  <element name="mensagemSNGPC" type="sngpc:ct_msgMovimentacao" />
+  <element name="mensagemSNGPCInventario" type="sngpc:ct_msgInventario" />
+
+  <complexType name="ct_msgMovimentacao">
+    <sequence>
+      <element name="cabecalho" minOccurs="1" maxOccurs="1">
+        <complexType>
+          <sequence>
+            <element name="cnpjEmissor" type="sngpc:st_CNPJ" />
+            <element name="cpfTransmissor" type="sngpc:st_CPF" />
+            <element name="dataInicio" type="sngpc:st_data" />
+            <element name="dataFim" type="sngpc:st_data" />
+          </sequence>
+        </complexType>
+      </element>
+      <element name="corpo" minOccurs="1" maxOccurs="1">
+        <complexType>
+          <sequence>
+            <element name="medicamentos">
+              <complexType>
+                <sequence>
+                  <element name="entradaMedicamentos" type="sngpc:ct_EntradaMedicamento" minOccurs="0" maxOccurs="unbounded" />
+                  <element name="saidaMedicamentoVendaAoConsumidor" type="sngpc:ct_SaidaMedicamentoVendaAoConsumidor" minOccurs="0" maxOccurs="unbounded" />
+                  <element name="saidaMedicamentoTransferencia" type="sngpc:ct_SaidaMedicamentoTransferencia" minOccurs="0" maxOccurs="unbounded" />
+                  <element name="saidaMedicamentoPerda" type="sngpc:ct_SaidaMedicamentoPerda" minOccurs="0" maxOccurs="unbounded" />
+                  <element name="entradaMedicamentoTransformacao" type="sngpc:ct_EntradaMedicamentoTransformacao" minOccurs="0" maxOccurs="unbounded" />
+                  <element name="saidaMedicamentoTransformacaoVendaAoConsumidor" type="sngpc:ct_SaidaMedicamentoTransformacaoVendaAoConsumidor" minOccurs="0" maxOccurs="unbounded" />
+                  <element name="saidaMedicamentoTransformacaoPerda" type="sngpc:ct_SaidaMedicamentoTransformacaoPerda" minOccurs="0" maxOccurs="unbounded" />
+                </sequence>
+              </complexType>
+            </element>
+            <element name="insumos">
+              <complexType>
+                <sequence>
+                  <element name="entradaInsumos" type="sngpc:ct_EntradaInsumo" minOccurs="0" maxOccurs="unbounded" />
+                  <element name="saidaInsumoVendaAoConsumidor" type="sngpc:ct_SaidaInsumoVenda" minOccurs="0" maxOccurs="unbounded" />
+                  <element name="saidaInsumoTransferencia" type="sngpc:ct_SaidaInsumoTransferencia" minOccurs="0" maxOccurs="unbounded" />
+                  <element name="saidaInsumoPerda" type="sngpc:ct_SaidaInsumoPerda" minOccurs="0" maxOccurs="unbounded" />
+                </sequence>
+              </complexType>
+            </element>
+          </sequence>
+        </complexType>
+      </element>
+    </sequence>
+  </complexType>
+
+  <complexType name="ct_msgInventario">
+    <sequence>
+      <element name="cabecalho" minOccurs="1" maxOccurs="1">
+        <complexType>
+          <sequence>
+            <element name="cnpjEmissor" type="sngpc:st_CNPJ" />
+            <element name="cpfTransmissor" type="sngpc:st_CPF" />
+            <element name="data" type="sngpc:st_data" />
+          </sequence>
+        </complexType>
+      </element>
+      <element name="corpo" minOccurs="1" maxOccurs="1">
+        <complexType>
+          <sequence>
+            <element name="medicamentos">
+              <complexType>
+                <sequence>
+                  <element name="entradaMedicamentos" type="sngpc:ct_Medicamento_Inventario" minOccurs="0" maxOccurs="unbounded" />
+                </sequence>
+              </complexType>
+            </element>
+            <element name="insumos">
+              <complexType>
+                <sequence>
+                  <element name="entradaInsumos" type="sngpc:ct_Insumo_Inventario" minOccurs="0" maxOccurs="unbounded" />
+                </sequence>
+              </complexType>
+            </element>
+          </sequence>
+        </complexType>
+      </element>
+    </sequence>
+  </complexType>
+
+</schema>

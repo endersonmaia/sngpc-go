@@ -1,0 +1,510 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!--
+@Versao: 2.5
+@Data: 2013-06-18
+-->
+<schema xmlns="http://www.w3.org/2001/XMLSchema" xmlns:sngpc="urn:sngpc-schema"
+    targetNamespace="urn:sngpc-schema" elementFormDefault="qualified">
+  <!-- Schema com os tipos simples importados do TISS -->
+  <simpleType name="st_classeTerapeutica">
+    <restriction base="string">
+      <!--Antimicrobiano-->
+      <enumeration value="1" />
+      <!--Sujeito a controle Especial-->
+      <enumeration value="2" />
+    </restriction>
+  </simpleType>
+  <simpleType name="st_data">
+    <restriction base="date"></restriction>
+  </simpleType>
+  <simpleType name="st_CPF">
+    <restriction base="string">
+      <!-- O tamanho Mínimo também deve ser 11 -->
+      <!-- <minLength value="0" />  -->
+      <minLength value="11" />
+      <maxLength value="11" />
+      <whiteSpace value="collapse" />
+      <pattern value="\d{11}"></pattern>
+    </restriction>
+  </simpleType>
+  <simpleType name="st_CNPJ">
+    <restriction base="string">
+      <!-- O Tamanho mínimo deve também ser 14 -->
+      <minLength value="14" />
+      <maxLength value="14" />
+      <pattern value="\d{14}" />
+    </restriction>
+  </simpleType>
+  <simpleType name="st_RazaoSocial">
+    <restriction base="string">
+      <maxLength value="100" />
+    </restriction>
+  </simpleType>
+  <simpleType name="st_AES">
+    <restriction base="string">
+      <minLength value="3" />
+      <maxLength value="3" />
+      <pattern value="[0-9]{3}" />
+    </restriction>
+  </simpleType> 
+  <simpleType name="st_simNao">
+    <restriction base="string">
+      <!--  Sim -->
+      <enumeration value="S" />
+      <!--  Nao -->
+      <enumeration value="N" />
+    </restriction>
+  </simpleType>
+  <simpleType name="st_SimNaoNull">
+    <restriction base="string">
+      <!--  Sim -->
+      <enumeration value="S" />
+      <!--  Nao -->
+      <enumeration value="N" />
+      <!-- Vazio -->
+      <enumeration value="" />
+    </restriction>
+  </simpleType>
+  <!-- Schema com os tipos simples de dados re-utilizados na construção dos tipos complexos -->
+  <simpleType name="st_NumeroNotaFiscal">
+    <restriction base="integer">
+      <totalDigits value="9" />
+    </restriction>
+  </simpleType>
+  <simpleType name="st_QuantidadeMedicamento">
+    <restriction base="integer">
+      <totalDigits value="6"/>
+      <minExclusive value="0"/>
+    </restriction>
+  </simpleType>
+  <simpleType name="st_QuantidadeGramasMedicamento">
+    <restriction base="decimal">
+      <totalDigits value="5" />
+      <fractionDigits value="2" />
+      <maxExclusive value="1000" />
+      <minExclusive value="0"/>
+    </restriction>
+  </simpleType>
+  <simpleType name="st_Notificacao">
+    <restriction base="string">
+      <maxLength value="10" />
+    </restriction>
+  </simpleType>
+  <simpleType name="st_RegistroMS">
+    <restriction base="string">
+      <minLength value="13" />
+      <maxLength value="14" />
+      <pattern value="[1]{1}[0-9]{12,13}" />
+    </restriction>
+  </simpleType>
+  <simpleType name="st_CodigoDCB">
+    <restriction base="string">
+      <length value="5"></length>
+      <pattern value="\d{5}"></pattern>
+    </restriction>
+  </simpleType>
+  <simpleType name="st_Nome">
+    <restriction base="string">
+      <maxLength value="100" />
+    </restriction>
+  </simpleType>
+  <simpleType name="st_NumeroDocumento">
+    <restriction base="string">
+      <maxLength value="30" />
+    </restriction>
+  </simpleType>
+  <simpleType name="st_Lote">
+    <restriction base="string">
+      <maxLength value="20" />
+    </restriction>
+  </simpleType>
+  <simpleType name="st_QuantidadeInsumo">
+    <restriction base="decimal">
+      <totalDigits value="12" />
+      <fractionDigits value="6" />
+      <maxExclusive value="1000000" />
+      <minExclusive value="0"/>
+    </restriction>
+  </simpleType>
+  <simpleType name="st_QuantidadeDeInsumoPorUnidadeFarmacotecnica">
+    <restriction base="decimal">
+      <totalDigits value="15" />
+      <fractionDigits value="6" />
+      <maxExclusive value="1000000000" />
+      <minExclusive value="0"/>
+    </restriction>
+  </simpleType>
+  <simpleType name="st_QuantidadeDeUnidadesFarmacotecnicas">
+    <restriction base="decimal">
+      <totalDigits value="10" />
+      <fractionDigits value="6" />
+      <maxExclusive value="10000" />
+      <minExclusive value="0"/>
+    </restriction>
+  </simpleType>
+  <simpleType name="st_TipoReceituario">
+    <restriction base="string">
+      <!--Receita de Controle Especial em 2 vias (Receita Branca)-->
+      <enumeration value="1" />
+      <!--Notificação de Receita B (Notificação Azul)-->
+      <enumeration value="2" />
+      <!--Notificação de Receita Especial (Notificação Branca)-->
+      <enumeration value="3" />
+      <!--Notificação de Receita A (Notificação Amarela)-->
+      <enumeration value="4" />
+	  <!--Receita Antimicrobiano em 2 vias-->
+	  <enumeration value="5"/> 
+    </restriction>
+  </simpleType>
+  <simpleType name="st_TipoUsoMedicamento">
+    <restriction base="string">
+      <!--Humano-->
+      <enumeration value="1" />
+      <!--Veterinario-->
+      <enumeration value="2" />
+    </restriction>
+  </simpleType>
+  <simpleType name="st_TipoOperacaoNotaFiscal">
+    <restriction base="string">
+      <!--Compra-->
+      <enumeration value="1" />
+      <!--Transferência-->
+      <enumeration value="2" />
+      <!--Venda-->
+      <enumeration value="3" />
+    </restriction>
+  </simpleType>
+  <simpleType name="st_ConselhoProfissional">
+    <restriction base="string">
+      <!--- Conselho Regional de Medicina -->
+      <enumeration value="CRM" />
+      <!-- Conselho Regional de Medicina Veterinária -->
+      <enumeration value="CRMV" />
+      <!-- Conselho Regional de Odontologia -->
+      <enumeration value="CRO" />
+	  <!--
+      Conselho Regional de Enfermagem
+	  <enumeration value="COREN"/>
+    -->
+	  <!-- Conselho Regional de Farmácia -->   
+	  <enumeration value="CRF"/>
+	  
+	  <!-- Programa Mais Medicos - Registro Ministério da Saúde -->
+	  <enumeration value="RMS"/>
+    </restriction>
+  </simpleType>
+  <simpleType name="st_UF">
+    <restriction base="string">
+      <!--- Acre -->
+      <enumeration value="AC" />
+      <!-- Alagoas -->
+      <enumeration value="AL" />
+      <!-- Amazonas -->
+      <enumeration value="AM" />
+      <!-- Amapa -->
+      <enumeration value="AP" />
+      <!-- Bahia -->
+      <enumeration value="BA" />
+      <!-- Ceara -->
+      <enumeration value="CE" />
+      <!-- Distrito Federal -->
+      <enumeration value="DF" />
+      <!-- Espirito Santo -->
+      <enumeration value="ES" />
+      <!-- Goias -->
+      <enumeration value="GO" />
+      <!-- Maranhao -->
+      <enumeration value="MA" />
+      <!-- Minas Gerais -->
+      <enumeration value="MG" />
+      <!-- Mato Grosso do Sul -->
+      <enumeration value="MS" />
+      <!-- Mato Grosso -->
+      <enumeration value="MT" />
+      <!-- Para -->
+      <enumeration value="PA" />
+      <!-- Paraiba -->
+      <enumeration value="PB" />
+      <!-- Pernambuco -->
+      <enumeration value="PE" />
+      <!-- Piaui -->
+      <enumeration value="PI" />
+      <!-- Parana -->
+      <enumeration value="PR" />
+      <!-- Rio de Janeiro -->
+      <enumeration value="RJ" />
+      <!-- Rio Grande do Norte -->
+      <enumeration value="RN" />
+      <!-- Rondonia -->
+      <enumeration value="RO" />
+      <!-- Roraima -->
+      <enumeration value="RR" />
+      <!-- Rio Grande do Sul -->
+      <enumeration value="RS" />
+      <!-- Santa Catarina -->
+      <enumeration value="SC" />
+      <!-- Sergipe -->
+      <enumeration value="SE" />
+      <!-- Sao Paulo -->
+      <enumeration value="SP" />
+      <!-- Tocantins -->
+      <enumeration value="TO" />
+    </restriction>
+  </simpleType>
+  <simpleType name="st_TipoMotivoPerda">
+    <restriction base="string">
+      <!--Furto / Roubo-->
+      <enumeration value="1" />
+      <!--Avaria-->
+      <enumeration value="2" />
+      <!--Vencimento-->
+      <enumeration value="3" />
+      <!--Apreensão / Recolhimento pela Visa-->
+      <enumeration value="4" />
+      <!--Perda no processo-->
+      <enumeration value="5" />
+      <!--Coleta para controle de qualidade-->
+      <enumeration value="6" />
+      <!--Perda de exclusão da portaria 344-->
+      <enumeration value="7" />
+      <!--Por desvio de qualidade -->
+      <enumeration value="8" />
+	  <!--Recolhimento do Fabricante -->
+	  <enumeration value="9"/>
+	  <!-- Devolução ao fornecedor/distribuidora -->
+	  <enumeration value="10"/>
+    </restriction>
+  </simpleType>
+  <simpleType name="st_TipoUnidadeInsumo">
+    <restriction base="string">
+      <!--Grama-->
+      <enumeration value="1" />
+      <!--Mililitro-->
+      <enumeration value="2" />
+      <!--Unidade (U)-->
+      <enumeration value="3" />
+    </restriction>
+  </simpleType>
+  <simpleType name="st_TipoUnidadeFarmacotecnica">
+    <restriction base="integer">
+      <!--Grama-->
+      <enumeration value="1" />
+      <!--Cápsula-->
+      <enumeration value="2" />
+      <!--Comprimido-->
+      <enumeration value="3" />
+      <!--Mililitro-->
+      <enumeration value="4" />
+    </restriction>
+  </simpleType>
+  <simpleType name="st_TipoDocumento">
+    <restriction base="string">
+      <!--CARTEIRA DE REGISTRO PROFISSIONAL-->
+      <enumeration value="1" />
+      <!--CARTEIRA DE IDENTIDADE-->
+      <enumeration value="2" />
+      <!-- Rever -->
+      <!--AUTORIZAÇÃO ESPECIAL DE FUNCIONAMENTO-->
+      <enumeration value="39" />
+      <!--PEDIDO DE AUTORIZAÇÃO DE TRABALHO-->
+      <enumeration value="4" />
+      <!--CERTIDÃO DE NASCIMENTO-->
+      <enumeration value="5" />
+      <!--CERTIDÃO DE CASAMENTO-->
+      <enumeration value="6" />
+      <!--CERTIFICADO DE RESERVISTA-->
+      <enumeration value="7" />
+      <!-- Rever -->
+      <!--CARTA PATENTE-->
+      <enumeration value="8" />
+      <!-- Rever -->
+      <!--AUTORIZAÇÃO DE FUNCIONAMENTO DE EMPRESA-->
+      <enumeration value="38" />
+      <!--CERTIFICADO DE DISPENSA DE INCORPORAÇÃO-->
+      <enumeration value="10" />
+      <!--CARTEIRA DE IDENTIDADE DO ESTRANGEIRO-->
+      <enumeration value="11" />
+      <!--  Rever  -->
+      <!--AUTORIZAÇÃO ESPECIAL SIMPLIFICADA-->
+      <enumeration value="40" />
+      <!--PASSAPORTE-->
+      <enumeration value="13" />
+      <!--PROTOCOLO DA POLÍCIA FEDERAL-->
+      <enumeration value="14" />
+      <!-- Rever -->
+      <!--INSCRIÇÃO ESTADUAL-->
+      <enumeration value="19" />
+      <!-- Rever -->
+      <!--INSCRIÇÃO MUNICIPAL-->
+      <enumeration value="20" />
+      <!-- Rever -->
+      <!--ALVARÁ/LICENÇA SANITÁRIA MUNICIPAL-->
+      <enumeration value="21" />
+      <!-- Rever -->
+      <!--ALVARÁ/LICENÇA SANITÁRIA ESTADUAL-->
+      <enumeration value="22" />
+      <!--CARTEIRA DE TRABALHO E PREVIDÊNCIA SOCIAL-->
+      <enumeration value="50" />
+      <!--CADASTRO NACIONAL DE PESSOA JURIDICA-->
+      <enumeration value="62" />
+    </restriction>
+  </simpleType>
+  <simpleType name="st_OrgaoExpedidor">
+    <restriction base="string">
+      <!--CONSELHO REGIONAL DE ADMINISTRAÇÃO-->
+      <enumeration value="CRA" />
+      <!--CONSELHO REGIONAL DE ECONOMIA-->
+      <enumeration value="CRE" />
+      <!--CONSELHO REG.DE ENG. ARQUIT. E AGRONOMIA-->
+      <enumeration value="CREA" />
+      <!--CONSELHO REGIONAL DE FARMÁCIA-->
+      <enumeration value="CRF" />
+      <!--DIRETORIA GERAL DA POLÍCIA CIVIL-->
+      <enumeration value="DGPC" />
+      <!--DEPARTAMENTO DE POLÍCIA FEDERAL-->
+      <enumeration value="DPF" />
+      <!--INSTITUTO IDENTIF. AROLDO MENDES PAIVA-->
+      <enumeration value="IDAMP" />
+      <!--INSTITUTO FÉLIX PACHECO-->
+      <enumeration value="IFP" />
+      <!--IMPRENSA NACIONAL-->
+      <enumeration value="IN" />
+      <!-- Rever -->
+      <!--JUNTA-->
+      <enumeration value="JUNTA" />
+      <!--MINISTÉRIO DA AERONÁUTICA-->
+      <enumeration value="MAER" />
+      <!--MINISTÉRIO DO EXÉRCITO-->
+      <enumeration value="MEX" />
+      <!--MINISTÉRIO DA MARINHA-->
+      <enumeration value="MM" />
+      <!--ORDEM DOS ADVOGADOS DO BRASIL-->
+      <enumeration value="OAB" />
+      <!--SECRETARIA DE EST. DA JUSTIÇA E SEG. PUB-->
+      <enumeration value="SEJSP" />
+      <!--SECRETARIA DE ESTADO DA SEGURANÇA-->
+      <enumeration value="SES" />
+      <!--SECRETARIA DO ESTADO SEG. PÚBLICA-->
+      <enumeration value="SESP" />
+      <!--SECRETARIA DA JUSTIÇA E DA SEGURANÇA-->
+      <enumeration value="SJS" />
+      <!--SECR. DA JUST. DO TRAB. E DA CIDADANIA-->
+      <enumeration value="SJTC" />
+      <!--SECR.  DE SEG. E INFORM. POLÍCIA TÉCNICA-->
+      <enumeration value="SSIPT" />
+      <!--SECRETARIA DE SEGURANÇA PÚBLICA-->
+      <enumeration value="SSP" />
+      <!--VARA CIVIL-->
+      <enumeration value="VACIV" />
+      <!--VARA DE MENORES-->
+      <enumeration value="VAMEN" />
+      <!--POLICIA MILITAR-->
+      <enumeration value="PM" />
+      <!--INSTITUTO TAVARES BURIL-->
+      <enumeration value="ITB" />
+      <!--CONSELHO REGIONAL DE MEDICINA-->
+      <enumeration value="CRM" />
+      <!--CORPO DE BOMBEIROS MILITAR-->
+      <enumeration value="CBM" />
+      <!--DETRAN - DIRETORIA DE IDENTIFICAÇÃ CIVIL-->
+      <enumeration value="DIC" />
+      <!--CONSELHO FEDERAL DE PSICOLOGIA-->
+      <enumeration value="CFP" />
+      <!--CONSELHO REGIONAL DE ODONTOLOGIA-->
+      <enumeration value="CRO" />
+      <!--CONSELHO REGIONAL DE ENFERMARIA-->
+      <enumeration value="COREN" />
+      <!--CONSELHO FEDERAL DE NUTRICIONISTAS-->
+      <enumeration value="CFN" />
+      <!--MINISTÉRIO DAS RELAÇÕES EXTERIORES-->
+      <enumeration value="MRE" />
+      <!--CONSELHO REG. DE CORRETORES DE IMÓVEIS-->
+      <enumeration value="CRCI" />
+      <!--CONSELHO REGIONAL DE BIOLOGIA-->
+      <enumeration value="CRB" />
+      <!--CONSELHO REGIONAL DE NUTRIÇÃO-->
+      <enumeration value="CRN" />
+      <!--CONSELHO FEDERAL DE ENFERMAGEM-->
+      <enumeration value="CFE" />
+      <!--CONSELHO REGIONAL DE CONTABILIDADE-->
+      <enumeration value="CRC" />
+      <!--CONSELHO REGIONAL DE PSICOLOGIA-->
+      <enumeration value="CRP" />
+      <!--CONSELHO REGIONAL DE QUIMICA-->
+      <enumeration value="CRQ" />
+      <!--AGÊNCIA NACIONAL DE VIGILÂNCIA SANITÁRIA-->
+      <enumeration value="ANVISA" />
+      <!--GOVERNO DO ESTADO-->
+      <enumeration value="GOVEST" />
+      <!--PREFEITURA-->
+      <enumeration value="PREF" />
+      <!--CONSELHO REGIONAL DE BIOMEDICINA-->
+      <enumeration value="CRBM" />
+      <!--INSTITUTO PEREIRA FAUSTINO-->
+      <enumeration value="IPF" />
+      <!--CONSELHO REGIONAL DE FISIOTERAPIA E TERAPIA OCUPACIONAL-->
+      <enumeration value="CREFITO" />
+      <!--CONSELHO REGIONAL DE MEDICINA VETERINÁRIA-->
+      <enumeration value="CRMV" />
+      <!--MINISTÉRIO DO TRABALHO E EMPREGO-->
+      <enumeration value="MTE" />
+      <!--CONSELHO REGIONAL DE FONOAUDIOLOGIA-->
+      <enumeration value="CRFA" />
+      <!--CONSELHO REGIONAL DE ECONOMIA-->
+      <enumeration value="CORECON" />
+      <!--SECRETARIA DE DESENVOLVIMENTO SOCIAL-->
+      <enumeration value="SDS" />
+      <!--SECRETARIA DA RECEITA FEDERAL-->
+      <enumeration value="SRF" />
+    </restriction>
+  </simpleType>
+  <simpleType name="st_DescricaoValidacao">
+    <restriction base="string">
+      <length value="200" />
+    </restriction>
+  </simpleType>
+  <simpleType name="st_Idade">
+    <restriction base="integer">
+      <minInclusive value="0"/>
+      <maxInclusive value="999"/>      
+    </restriction>    
+  </simpleType>
+
+  <simpleType name="st_UnidadeIdade">
+    <restriction base="int">
+      <!-- Anos -->
+      <enumeration value="1" />
+      <!-- Meses -->
+      <enumeration value="2" />
+    </restriction>
+  </simpleType>
+
+  <simpleType name="st_Sexo">
+    <restriction base="int">
+      <!-- Masculino -->
+      <enumeration value="1" />
+      <!-- Feminino -->
+      <enumeration value="2" />     
+    </restriction>
+  </simpleType>
+
+  <!--Tipo e tamanho definidos em conformidade com a 
+      Tabela CID10 do Schema de Banco de Dados Coorporativo-->
+  <simpleType name="st_Cid">
+    <restriction base="string">
+       <minLength value="0" />
+      <maxLength value="4" />
+    </restriction>
+  </simpleType>
+
+
+  <simpleType name="st_UnidadeMedidaMedicamento">
+    <restriction base="string">
+      <!--Caixas-->
+      <enumeration value="1" />
+      <!--Frascos-->
+      <enumeration value="2" />
+    </restriction>
+  </simpleType>
+  
+</schema>

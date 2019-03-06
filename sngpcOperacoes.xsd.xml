@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="iso-8859-1" ?>
+<!--
+@Versao: 2.5
+@Data: 2013-06-18
+-->
+<schema
+    xmlns = "http://www.w3.org/2001/XMLSchema"
+    xmlns:sngpc = "urn:sngpc-schema"
+    targetNamespace = "urn:sngpc-schema"
+    elementFormDefault = "qualified"><!--Definicao do corpo da entrada e saida de produtos -->
+    <include schemaLocation = "sngpcSimpleTypes.xsd"/>
+    <include schemaLocation = "sngpcComplexTypes.xsd"/>
+    <complexType name = "ct_EntradaMedicamento">
+        <sequence>
+            <!--<element name = "classeTerapeutica" type = "sngpc:st_classeTerapeutica"/>-->
+            <element name = "notaFiscalEntradaMedicamento" type = "sngpc:ct_NotaFiscal"/>
+            <!--<element name = "medicamentoEntrada" type = "sngpc:ct_Medicamento" minOccurs = "0" maxOccurs = "unbounded"/>-->
+            <element name = "medicamentoEntrada" type = "sngpc:ct_MedicamentoEntrada" minOccurs = "0" maxOccurs = "unbounded"/>
+            <element name = "dataRecebimentoMedicamento" type = "sngpc:st_data"/>
+        </sequence>
+    </complexType>
+    <complexType name = "ct_SaidaMedicamentoVendaAoConsumidor">
+        <sequence>
+            <!--<element name = "classeTerapeutica" type = "sngpc:st_classeTerapeutica"/>
+            <element name = "usoProlongado" type = "sngpc:st_SimNaoNull"/>-->
+            <element name = "tipoReceituarioMedicamento" type = "sngpc:st_TipoReceituario"/>
+            <element name = "numeroNotificacaoMedicamento" type = "sngpc:st_Notificacao"/>
+            <element name = "dataPrescricaoMedicamento" type = "sngpc:st_data"/>
+            <element name = "prescritorMedicamento" type = "sngpc:ct_Prescritor"/>
+            <element name = "usoMedicamento" type = "sngpc:st_TipoUsoMedicamento"/>
+            <element name = "compradorMedicamento" type = "sngpc:ct_Comprador" minOccurs="0" maxOccurs="1" />
+            <element name = "pacienteMedicamento" type = "sngpc:ct_paciente" minOccurs="0" maxOccurs="1" />
+            <element name = "medicamentoVenda" type = "sngpc:ct_MedicamentoVenda" minOccurs = "0" maxOccurs = "unbounded" />
+            <element name = "dataVendaMedicamento" type = "sngpc:st_data"/>
+        </sequence>
+    </complexType>
+    <complexType name = "ct_SaidaMedicamentoTransferencia">
+        <sequence>
+			<!--<element name = "classeTerapeutica" type = "sngpc:st_classeTerapeutica" />-->
+            <element name = "notaFiscalTransferenciaMedicamento" type = "sngpc:ct_NotaFiscal" />
+            <element name = "medicamentoTransferencia" type = "sngpc:ct_Medicamento" minOccurs = "0" maxOccurs = "unbounded"/>
+            <element name = "dataTransferenciaMedicamento" type = "sngpc:st_data"/>
+        </sequence>
+    </complexType>
+    <complexType name = "ct_SaidaMedicamentoPerda">
+        <sequence>
+			<!--<element name = "classeTerapeutica" type = "sngpc:st_classeTerapeutica"/>-->
+            <element name = "motivoPerdaMedicamento" type = "sngpc:st_TipoMotivoPerda"/>
+            <element name = "medicamentoPerda" type = "sngpc:ct_Medicamento"/>
+            <element name = "dataPerdaMedicamento" type = "sngpc:st_data"/>
+        </sequence>
+    </complexType>
+    <complexType name = "ct_EntradaMedicamentoTransformacao">
+        <sequence>
+            <!--<element name = "classeTerapeutica" type = "sngpc:st_classeTerapeutica"/>-->
+			<element name = "medicamentoTransformacaoEntrada" type="sngpc:ct_MedicamentoTransformacao" minOccurs = "0" maxOccurs = "unbounded"/>
+            <element name = "dataTransformacaoEntrada" type = "sngpc:st_data"/>
+        </sequence>
+    </complexType>
+	<complexType name = "ct_SaidaMedicamentoTransformacaoVendaAoConsumidor">
+        <sequence>
+            <!--<element name = "classeTerapeutica" type = "sngpc:st_classeTerapeutica"/>
+                <element name = "usoProlongado" type = "sngpc:st_SimNaoNull"/>-->
+            <element name = "tipoReceituarioMedicamento" type = "sngpc:st_TipoReceituario"/>
+            <element name = "numeroNotificacaoMedicamento" type = "sngpc:st_Notificacao"/>
+            <element name = "dataPrescricaoMedicamento" type = "sngpc:st_data"/>
+            <element name = "prescritorMedicamento" type = "sngpc:ct_Prescritor"/>
+            <element name = "usoMedicamento" type = "sngpc:st_TipoUsoMedicamento"/>
+            <element name = "compradorMedicamento" type = "sngpc:ct_Comprador" minOccurs="0" maxOccurs="1"/>
+            <element name = "pacienteMedicamento" type = "sngpc:ct_paciente" minOccurs="0" maxOccurs="1"/>
+            <element name = "medicamentoVenda" type = "sngpc:ct_MedicamentoTransformacaoVenda" minOccurs = "0" maxOccurs = "unbounded"/>
+            <element name = "dataVendaMedicamento" type = "sngpc:st_data"/>
+        </sequence>
+    </complexType>
+	
+	
+    <complexType name = "ct_SaidaMedicamentoTransformacaoPerda">
+        <sequence>
+			<!--<element name = "classeTerapeutica" type = "sngpc:st_classeTerapeutica"/>-->
+            <element name = "motivoPerdaMedicamento" type = "sngpc:st_TipoMotivoPerda"/>
+            <element name = "medicamentoPerda" type = "sngpc:ct_MedicamentoSaidaTransformacao"/>
+            <element name = "dataPerdaMedicamento" type = "sngpc:st_data"/>
+        </sequence>
+    </complexType>
+  
+  <!--Definicao do corpo da entrada e saida de insumos -->
+    <complexType name = "ct_EntradaInsumo">
+        <sequence>
+            <!--<element name = "classeTerapeutica" type = "sngpc:st_classeTerapeutica"/>-->
+            <element name = "notaFiscalEntradaInsumo" type = "sngpc:ct_NotaFiscal"/>
+            <element name = "insumoEntrada" type = "sngpc:ct_InsumoBasicoEntrada" minOccurs = "0" maxOccurs = "unbounded" />
+            <element name = "dataRecebimentoInsumo" type = "sngpc:st_data"/>
+        </sequence>
+    </complexType>
+    <complexType name = "ct_SaidaInsumoVenda">
+        <sequence>
+            <!--<element name = "classeTerapeutica" type = "sngpc:st_classeTerapeutica"/>-->
+            <element name = "tipoReceituarioInsumo" type = "sngpc:st_TipoReceituario"/>
+            <element name = "numeroNotificacaoInsumo" type = "sngpc:st_Notificacao"/>
+            <element name = "dataPrescricaoInsumo" type = "sngpc:st_data"/>
+            <element name = "prescritorInsumo" type = "sngpc:ct_Prescritor"/>
+            <element name = "usoInsumo" type = "sngpc:st_TipoUsoMedicamento"/>
+            <element name = "compradorInsumo" type = "sngpc:ct_Comprador" minOccurs="0" maxOccurs="1"/>
+            <element name = "pacienteInsumo" type = "sngpc:ct_paciente" minOccurs="0" maxOccurs="1"/>
+            <element name = "substanciaInsumoVendaAoConsumidor" type = "sngpc:ct_InsumoVendaAoConsumidor" minOccurs = "0" maxOccurs = "unbounded"/>
+            <element name = "dataVendaInsumo" type = "sngpc:st_data"/>
+        </sequence>
+    </complexType>
+    <complexType name = "ct_SaidaInsumoTransferencia">
+      <sequence>
+        <!--<element name = "classeTerapeutica" type = "sngpc:st_classeTerapeutica"/>-->
+        <element name = "notaFiscalTransferenciaInsumo" type = "sngpc:ct_NotaFiscal"/>
+        <!--<element name = "substanciaInsumoTransferencia" />-->
+        <element name = "insumoTransferencia" type = "sngpc:ct_InsumoBasico" minOccurs="0" maxOccurs="unbounded" />
+        <element name = "dataTransferenciaInsumo" type = "sngpc:st_data"/>
+      </sequence>
+    </complexType>
+    <complexType name = "ct_SaidaInsumoPerda">
+        <sequence>
+            <!--<element name = "classeTerapeutica" type = "sngpc:st_classeTerapeutica"/>-->
+            <element name = "motivoPerdaInsumo" type = "sngpc:st_TipoMotivoPerda"/>
+            <element name = "substanciaInsumoPerda" type = "sngpc:ct_InsumoPerda"/>
+            <element name = "dataPerdaInsumo" type = "sngpc:st_data"/>
+            <element name = "insumoCNPJFornecedor" type = "sngpc:st_CNPJ"/>
+        </sequence>
+    </complexType>
+    <complexType name = "ct_Medicamento_Inventario">
+        <sequence>
+            <!--<element name = "classeTerapeutica" type = "sngpc:st_classeTerapeutica"/>
+            <element name = "medicamentoEntrada" type = "sngpc:ct_Medicamento"/>-->
+            <element name = "medicamentoEntrada" type = "sngpc:ct_MedicamentoEntrada" />
+        </sequence>
+    </complexType>
+    <complexType name = "ct_Insumo_Inventario">
+        <sequence>
+            <!--<element name = "classeTerapeutica" type = "sngpc:st_classeTerapeutica"/>-->
+            <element name = "insumoEntrada" type = "sngpc:ct_InsumoBasicoEntrada"/>
+        </sequence>
+    </complexType>
+</schema>
