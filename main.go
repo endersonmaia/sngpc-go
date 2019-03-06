@@ -3,111 +3,60 @@ package main
 import (
 	"encoding/xml"
 	"fmt"
+	"io/ioutil"
+	"os"
+	"regexp"
 )
 
-var XML = []byte(`
-<mensagemSNGPCInventario xmlns="urn:sngpc-schema">
-    <cabecalho>
-        <cnpjEmissor>05059874000138</cnpjEmissor>
-        <cpfTransmissor>72586648153</cpfTransmissor>
-        <data>2006-09-30</data>
-    </cabecalho>
-    <corpo>
-        <medicamentos>
-            <entradaMedicamentos>
-                <medicamentoEntrada>
-                    <classeTerapeutica>1</classeTerapeutica>
-                    <registroMSMedicamento>1888888888888</registroMSMedicamento>
-                    <numeroLoteMedicamento>200678</numeroLoteMedicamento>
-                    <quantidadeMedicamento>1234</quantidadeMedicamento>
-                    <unidadeMedidaMedicamento>1</unidadeMedidaMedicamento>
-                </medicamentoEntrada>
-            </entradaMedicamentos>
-            <entradaMedicamentos>
-                <medicamentoEntrada>
-                    <classeTerapeutica>1</classeTerapeutica>
-                    <registroMSMedicamento>1888888888888</registroMSMedicamento>
-                    <numeroLoteMedicamento>200678</numeroLoteMedicamento>
-                    <quantidadeMedicamento>1234</quantidadeMedicamento>
-                    <unidadeMedidaMedicamento>1</unidadeMedidaMedicamento>
-                </medicamentoEntrada>
-            </entradaMedicamentos>
-        </medicamentos>
-        <insumos>
-            <entradaInsumos>
-                <insumoEntrada>
-                    <classeTerapeutica>1</classeTerapeutica>
-                    <codigoInsumo>00092</codigoInsumo>
-                    <numeroLoteInsumo>A315</numeroLoteInsumo>
-                    <insumoCNPJFornecedor>99900099900000</insumoCNPJFornecedor>
-                    <quantidadeInsumo>300000.0</quantidadeInsumo>
-                    <tipoUnidade>1</tipoUnidade>
-                </insumoEntrada>
-            </entradaInsumos>
-            <entradaInsumos>
-                <insumoEntrada>
-                    <classeTerapeutica>1</classeTerapeutica>
-                    <codigoInsumo>00092</codigoInsumo>
-                    <numeroLoteInsumo>A315</numeroLoteInsumo>
-                    <insumoCNPJFornecedor>99900099900000</insumoCNPJFornecedor>
-                    <quantidadeInsumo>300000.0</quantidadeInsumo>
-                    <tipoUnidade>1</tipoUnidade>
-                </insumoEntrada>
-            </entradaInsumos>
-        </insumos>
-    </corpo>
-</mensagemSNGPCInventario>
-`)
-
 //ClasseTerapeutica - st_classeTerapeutica
-type SNGPCClasseTerapeutica uint8
+type ClasseTerapeutica uint8
 
 //ClasseTerapeutica - st_classeTerapeutica enum
 const (
-	Antimicrobiano           SNGPCClasseTerapeutica = 1
-	SujeitoAControleEspecial SNGPCClasseTerapeutica = 2
+	Antimicrobiano           ClasseTerapeutica = 1
+	SujeitoAControleEspecial ClasseTerapeutica = 2
 )
 
-type SNGPCUnidadeMedidaMedicamento uint8
+type UnidadeMedidaMedicamento uint8
 
 const (
-	Caixas  SNGPCUnidadeMedidaMedicamento = 1
-	Frascos SNGPCUnidadeMedidaMedicamento = 2
+	Caixas  UnidadeMedidaMedicamento = 1
+	Frascos UnidadeMedidaMedicamento = 2
 )
 
-type SNGPCTipoUnidadeInsumo uint8
+type TipoUnidadeInsumo uint8
 
 const (
-	Grama     SNGPCTipoUnidadeInsumo = 1
-	Mililitro SNGPCTipoUnidadeInsumo = 2
-	Unidade   SNGPCTipoUnidadeInsumo = 3
+	Grama     TipoUnidadeInsumo = 1
+	Mililitro TipoUnidadeInsumo = 2
+	Unidade   TipoUnidadeInsumo = 3
 )
 
-//SNGPCCabecalho XML
+//Cabecalho XML
 //    <cabecalho>
 //         <cnpjEmissor>05059874000138</cnpjEmissor>
 //         <cpfTransmissor>72586648153</cpfTransmissor>
 //         <data>2006-09-30</data>
 //     </cabecalho>
-type SNGPCCabecalho struct {
+type Cabecalho struct {
 	XMLName        xml.Name `xml:"cabecalho"`
 	CnpjEmissor    string   `xml:"cnpjEmissor"`
 	CpfTransmissor string   `xml:"cpfTransmissor"`
 	Data           string   `xml:"data"`
 }
 
-//SNGPCInsumos XML
-type SNGPCInsumos struct {
+//Insumos XML
+type Insumos struct {
 	XMLName xml.Name `xml:"insumos"`
 }
 
-//SNGPCEntradaInsumos
-type SNGPCEntradaInsumos struct {
-	XMLName       xml.Name              `xml:"entradaInsumos"`
-	InsumoEntrada []SNGPCInsumoEnrtrada `xml:"insumoEntrada"`
+//EntradaInsumos
+type EntradaInsumos struct {
+	XMLName       xml.Name        `xml:"entradaInsumos"`
+	InsumoEntrada []InsumoEntrada `xml:"insumoEntrada"`
 }
 
-//SNGPCMedicamentoEntrada
+//MedicamentoEntrada
 // <insumoEntrada>
 // 		<classeTerapeutica>1</classeTerapeutica>
 // 		<codigoInsumo>00092</codigoInsumo>
@@ -116,28 +65,28 @@ type SNGPCEntradaInsumos struct {
 // 		<quantidadeInsumo>300000.0</quantidadeInsumo>
 // 		<tipoUnidade>1</tipoUnidade>
 // </insumoEntrada>
-type SNGPCInsumoEnrtrada struct {
-	XMLName              xml.Name               `xml:"InsumoEntrada"`
-	ClasseTerapeutica    SNGPCClasseTerapeutica `xml:"classeTerapeutica"`
-	CodigoInsumo         string                 `xml:"codigoInsumo"`
-	NumeroLoteInsumo     string                 `xml:"numeroLoteInsumo"`
-	InsumoCNPJFornecedor string                 `xml:"insumoCNPJFornecedor"`
-	QuantidadeInsumo     int                    `xml:"quantidadeInsumo"`
-	UnidadeMedidaInsumo  SNGPCTipoUnidadeInsumo `xml:"unidadeMedidaInsumo"`
+type InsumoEntrada struct {
+	XMLName              xml.Name          `xml:"InsumoEntrada"`
+	ClasseTerapeutica    ClasseTerapeutica `xml:"classeTerapeutica"`
+	CodigoInsumo         string            `xml:"codigoInsumo"`
+	NumeroLoteInsumo     string            `xml:"numeroLoteInsumo"`
+	InsumoCNPJFornecedor string            `xml:"insumoCNPJFornecedor"`
+	QuantidadeInsumo     int               `xml:"quantidadeInsumo"`
+	UnidadeMedidaInsumo  TipoUnidadeInsumo `xml:"unidadeMedidaInsumo"`
 }
 
-//SNGPCMedicamentos XML
-type SNGPCMedicamentos struct {
+//Medicamentos XML
+type Medicamentos struct {
 	XMLName xml.Name `xml:"medicamentos"`
 }
 
-//SNGPCEntradaMedicamentos
-type SNGPCEntradaMedicamentos struct {
-	XMLName            xml.Name                   `xml:"entradamedicamentos"`
-	MedicamentoEntrada []SNGPCMedicamentoEnrtrada `xml:"medicamentoEntrada"`
+//EntradaMedicamentos
+type EntradaMedicamentos struct {
+	XMLName            xml.Name             `xml:"entradamedicamentos"`
+	MedicamentoEntrada []MedicamentoEntrada `xml:"medicamentoEntrada"`
 }
 
-//SNGPCMedicamentoEntrada
+//MedicamentoEntrada
 // <medicamentoEntrada>
 // <classeTerapeutica>1</classeTerapeutica>
 // <registroMSMedicamento>1888888888888</registroMSMedicamento>
@@ -145,43 +94,57 @@ type SNGPCEntradaMedicamentos struct {
 // <quantidadeMedicamento>1234</quantidadeMedicamento>
 // <unidadeMedidaMedicamento>1</unidadeMedidaMedicamento>
 // </medicamentoEntrada>
-type SNGPCMedicamentoEnrtrada struct {
-	XMLName                  xml.Name                      `xml:"medicamentoEntrada"`
-	ClasseTerapeutica        SNGPCClasseTerapeutica        `xml:"classeTerapeutica"`
-	RegistroMSMedicamento    string                        `xml:"registroMSMedicamento"`
-	NumeroLoteMedicamento    string                        `xml:"numeroLoteMedicamento"`
-	QuantidadeMedicamento    int                           `xml:"quantidadeMedicamento"`
-	UnidadeMedidaMedicamento SNGPCUnidadeMedidaMedicamento `xml:"unidadeMedidaMedicamento"`
+type MedicamentoEntrada struct {
+	XMLName                  xml.Name                 `xml:"medicamentoEntrada"`
+	ClasseTerapeutica        ClasseTerapeutica        `xml:"classeTerapeutica"`
+	RegistroMSMedicamento    string                   `xml:"registroMSMedicamento"`
+	NumeroLoteMedicamento    string                   `xml:"numeroLoteMedicamento"`
+	QuantidadeMedicamento    int                      `xml:"quantidadeMedicamento"`
+	UnidadeMedidaMedicamento UnidadeMedidaMedicamento `xml:"unidadeMedidaMedicamento"`
 }
 
-//SNGPCCorpo XML
-type SNGPCCorpo struct {
-	XMLName      xml.Name            `xmml:"corpo"`
-	Medicamentos []SNGPCMedicamentos `xml:"medicamentos"`
-	Insumos      []SNGPCInsumos      `xml:"insumos"`
+//Corpo XML
+type Corpo struct {
+	XMLName      xml.Name       `xmml:"corpo"`
+	Medicamentos []Medicamentos `xml:"medicamentos"`
+	Insumos      []Insumos      `xml:"insumos"`
 }
 
-//SNGPCMensagemSNGPCInventario root XML
-type SNGPCMensagemSNGPCInventario struct {
-	XMLName   xml.Name       `xml:"mensagemSNGPCInventario"`
-	Cabecalho SNGPCCabecalho `xml:"cabecalho"`
-	Corpo     SNGPCCorpo     `xml:"corpo"`
+//MensagemSNGPCInventario root XML
+type MensagemSNGPCInventario struct {
+	XMLName   xml.Name  `xml:"mensagemSNGPCInventario"`
+	Cabecalho Cabecalho `xml:"cabecalho"`
+	Corpo     Corpo     `xml:"corpo"`
 }
 
-func (s SNGPCMensagemSNGPCInventario) String() string {
+func (s MensagemSNGPCInventario) String() string {
 	return fmt.Sprintf("%v\n%v", s.Cabecalho, s.Corpo)
 }
 
-func (s SNGPCCabecalho) String() string {
+func (s Cabecalho) String() string {
 	return fmt.Sprintf("cnpj : %v ; cpf : %v ; data : %v\n", s.CnpjEmissor, s.CpfTransmissor, s.Data)
 }
 
-func (s SNGPCCorpo) String() string {
+func (s Corpo) String() string {
 	return fmt.Sprintf("medicamentos : %v ; insumos : %v\n", s.Medicamentos, s.Insumos)
 }
 
 func main() {
-	var sngpc SNGPCMensagemSNGPCInventario
-	xml.Unmarshal(XML, &sngpc)
+	var sngpc MensagemSNGPCInventario
+
+	xmlFile, err := os.Open("inventario.xml")
+
+	if err != nil {
+		fmt.Println(err)
+	}
+
+	defer xmlFile.Close()
+
+	XML, _ := ioutil.ReadAll(xmlFile)
+
+	var re = regexp.MustCompile(`^.*(ISO-8859-1).*$`)
+	s := re.ReplaceAllString(string(XML), `asdasdasd`)
+	fmt.Println(s)
+	xml.Unmarshal([]byte(s), &sngpc)
 	fmt.Println(sngpc)
 }
