@@ -1,152 +1,263 @@
 package main
 
 import (
+	"bufio"
 	"encoding/xml"
 	"fmt"
-	"io"
 	"os"
+	"strings"
 
 	"golang.org/x/net/html/charset"
 )
 
-//ClasseTerapeutica - st_classeTerapeutica
-type ClasseTerapeutica uint8
+func check(e error) {
+	if e != nil {
+		panic(e)
+	}
+}
 
-//ClasseTerapeutica - st_classeTerapeutica enum
-const (
-	Antimicrobiano           ClasseTerapeutica = 1
-	SujeitoAControleEspecial ClasseTerapeutica = 2
-)
-
-type UnidadeMedidaMedicamento uint8
-
-const (
-	Caixas  UnidadeMedidaMedicamento = 1
-	Frascos UnidadeMedidaMedicamento = 2
-)
-
-type TipoUnidadeInsumo uint8
-
-const (
-	Grama     TipoUnidadeInsumo = 1
-	Mililitro TipoUnidadeInsumo = 2
-	Unidade   TipoUnidadeInsumo = 3
-)
-
-//Cabecalho XML
-//    <cabecalho>
-//         <cnpjEmissor>05059874000138</cnpjEmissor>
-//         <cpfTransmissor>72586648153</cpfTransmissor>
-//         <data>2006-09-30</data>
-//     </cabecalho>
-type Cabecalho struct {
+//CabecalhoInventario
+type CabecalhoInventario struct {
 	XMLName        xml.Name `xml:"cabecalho"`
 	CnpjEmissor    string   `xml:"cnpjEmissor"`
 	CpfTransmissor string   `xml:"cpfTransmissor"`
 	Data           string   `xml:"data"`
 }
 
-//Insumos XML
+//CabecalhoMovimentacao
+type CabecalhoMovimentacao struct {
+	XMLName        xml.Name `xml:"cabecalho"`
+	CnpjEmissor    string   `xml:"cnpjEmissor"`
+	CpfTransmissor string   `xml:"cpfTransmissor"`
+	DataInicio     string   `xml:"dataInicio"`
+	DataFim        string   `xml:"dataFim"`
+}
+
+//Insumos
 type Insumos struct {
-	XMLName xml.Name `xml:"insumos"`
+	XMLName        xml.Name         `xml:"insumos"`
+	EntradaInsumos []EntradaInsumos `xml:"entradaInsumos"`
 }
 
 //EntradaInsumos
 type EntradaInsumos struct {
-	XMLName       xml.Name        `xml:"entradaInsumos"`
-	InsumoEntrada []InsumoEntrada `xml:"insumoEntrada"`
+	XMLName       xml.Name      `xml:"entradaInsumos"`
+	InsumoEntrada InsumoEntrada `xml:"insumoEntrada"`
 }
 
-//MedicamentoEntrada
-// <insumoEntrada>
-// 		<classeTerapeutica>1</classeTerapeutica>
-// 		<codigoInsumo>00092</codigoInsumo>
-// 		<numeroLoteInsumo>A315</numeroLoteInsumo>
-// 		<insumoCNPJFornecedor>99900099900000</insumoCNPJFornecedor>
-// 		<quantidadeInsumo>300000.0</quantidadeInsumo>
-// 		<tipoUnidade>1</tipoUnidade>
-// </insumoEntrada>
+//InsumoEntrada
 type InsumoEntrada struct {
-	XMLName              xml.Name          `xml:"InsumoEntrada"`
-	ClasseTerapeutica    ClasseTerapeutica `xml:"classeTerapeutica"`
-	CodigoInsumo         string            `xml:"codigoInsumo"`
-	NumeroLoteInsumo     string            `xml:"numeroLoteInsumo"`
-	InsumoCNPJFornecedor string            `xml:"insumoCNPJFornecedor"`
-	QuantidadeInsumo     int               `xml:"quantidadeInsumo"`
-	UnidadeMedidaInsumo  TipoUnidadeInsumo `xml:"unidadeMedidaInsumo"`
+	XMLName              xml.Name `xml:"insumoEntrada"`
+	ClasseTerapeutica    uint     `xml:"classeTerapeutica"`
+	CodigoInsumo         string   `xml:"codigoInsumo"`
+	NumeroLoteInsumo     string   `xml:"numeroLoteInsumo"`
+	InsumoCNPJFornecedor string   `xml:"insumoCNPJFornecedor"`
+	QuantidadeInsumo     float32  `xml:"quantidadeInsumo"`
+	UnidadeMedidaInsumo  uint     `xml:"unidadeMedidaInsumo"`
 }
 
 //Medicamentos XML
 type Medicamentos struct {
-	XMLName xml.Name `xml:"medicamentos"`
+	XMLName                           xml.Name                            `xml:"medicamentos"`
+	EntradaMedicamentos               []EntradaMedicamentos               `xml:"entradaMedicamentos"`
+	SaidaMedicamentoVendaAoConsumidor []SaidaMedicamentoVendaAoConsumidor `xml:"daidaMedicamentoVendaAoConsumidor"`
+	// name="saidaMedicamentoTransferencia
+	// name="saidaMedicamentoPerda
+	// name="entradaMedicamentoTransformacao
+	// name="saidaMedicamentoTransformacaoVendaAoConsumidor
+	// name="saidaMedicamentoTransformacaoPerda
 }
 
 //EntradaMedicamentos
 type EntradaMedicamentos struct {
-	XMLName            xml.Name             `xml:"entradamedicamentos"`
-	MedicamentoEntrada []MedicamentoEntrada `xml:"medicamentoEntrada"`
+	XMLName            xml.Name           `xml:"entradaMedicamentos"`
+	MedicamentoEntrada MedicamentoEntrada `xml:"medicamentoEntrada"`
+}
+
+type SaidaMedicamentoVendaAoConsumidor struct {
+	XMLName                      xml.Name              `xml:"saidaMedicamentoVendaAoConsumidos"`
+	TipoReceituarioMedicamento   string                `xml:"tipoReceituarioMedicamento"`
+	NumeroNotificacaoMedicamento string                `xml:"numeroNotificacaoMedicamento"`
+	DataPrescricaoMedicamento    string                `xml:"dataPrescricaoMedicamento"`
+	PrescritorMedicamento        PrescritorMedicamento `xml:"prescritorMedicamento"`
+	UsoMedicamento               string                `xml:"usoMedicamento"`
+	CompradorMedicamento         CompradorMedicamento  `xml:"compradorMedicamento"`
+	PacienteMedicamento          PacienteMedicamento   `xml:"pacienteMedicamento"`
+	MedicamentoVenda             []MedicamentoVenda    `xml:"medicamentoVenda"`
+	DataVendaMedicamento         string                `xml:"dataVendaMedicamento"`
+}
+
+type PrescritorMedicamento struct {
+	XMLName                    xml.Name `xml:"prescritorMedicamento"`
+	NomePrescritor             string   `xml:"nomePrescritor"`
+	NumeroRegistroProfissional string   `xml:"numeroRegistroProfissional"`
+	ConselhoProfissional       string   `xml:"conselhoProfissional"`
+	UFConselho                 string   `xml:"UFConselho"`
+}
+
+type CompradorMedicamento struct {
+	XMLName            xml.Name `xml:"compradorMedicamento"`
+	NomeComprador      string   `xml:"nomeComprador"`
+	TipoDocumento      string   `xml:"tipoDocumento"`
+	NumeroDocumento    string   `xml:"numeroDocumento"`
+	OrgaoExpedidor     string   `xml:"orgaoExpedidor"`
+	UFEmissaoDocumento string   `xml:"UFEmissaoDocumento"`
+}
+
+type MedicamentoVenda struct {
+	XMLName                  xml.Name `xml:"medicamentoVenda"`
+	UsoProlongado            string   `xml:"usoProlongado"`
+	RegistroMSMedicamento    string   `xml:"registroMSMedicamento"`
+	NumeroLoteMedicamento    string   `xml:"numeroLoteMedicamento"`
+	QuantidadeMedicamento    string   `xml:"quantidadeMedicamento"`
+	UnidadeMedidaMedicamento string   `xml:"unidadeMedidaMedicamento"`
+}
+
+type PacienteMedicamento struct {
+	XMLName      xml.Name `xml:"pacienteMedicamento"`
+	Nome         string   `xml:"nome"`
+	Idade        string   `xml:"idade"`
+	UnidadeIdade string   `xml:"unidadeIdade"`
+	Sexo         string   `xml:"sexo"`
+	Cid          string   `xml:"cid"`
 }
 
 //MedicamentoEntrada
-// <medicamentoEntrada>
-// <classeTerapeutica>1</classeTerapeutica>
-// <registroMSMedicamento>1888888888888</registroMSMedicamento>
-// <numeroLoteMedicamento>200678</numeroLoteMedicamento>
-// <quantidadeMedicamento>1234</quantidadeMedicamento>
-// <unidadeMedidaMedicamento>1</unidadeMedidaMedicamento>
-// </medicamentoEntrada>
 type MedicamentoEntrada struct {
-	XMLName                  xml.Name                 `xml:"medicamentoEntrada"`
-	ClasseTerapeutica        ClasseTerapeutica        `xml:"classeTerapeutica"`
-	RegistroMSMedicamento    string                   `xml:"registroMSMedicamento"`
-	NumeroLoteMedicamento    string                   `xml:"numeroLoteMedicamento"`
-	QuantidadeMedicamento    int                      `xml:"quantidadeMedicamento"`
-	UnidadeMedidaMedicamento UnidadeMedidaMedicamento `xml:"unidadeMedidaMedicamento"`
+	XMLName                  xml.Name `xml:"medicamentoEntrada"`
+	ClasseTerapeutica        uint     `xml:"classeTerapeutica"`
+	RegistroMSMedicamento    string   `xml:"registroMSMedicamento"`
+	NumeroLoteMedicamento    string   `xml:"numeroLoteMedicamento"`
+	QuantidadeMedicamento    uint     `xml:"quantidadeMedicamento"`
+	UnidadeMedidaMedicamento uint     `xml:"unidadeMedidaMedicamento"`
 }
 
-//Corpo XML
-type Corpo struct {
-	XMLName      xml.Name       `xmml:"corpo"`
-	Medicamentos []Medicamentos `xml:"medicamentos"`
-	Insumos      []Insumos      `xml:"insumos"`
+//Corpo
+type CorpoInventario struct {
+	XMLName      xml.Name     `xmml:"corpo"`
+	Medicamentos Medicamentos `xml:"medicamentos"`
+	Insumos      Insumos      `xml:"insumos"`
 }
 
-//MensagemSNGPCInventario root XML
+//Corpo
+type CorpoMovimentacao struct {
+	XMLName      xml.Name     `xmml:"corpo"`
+	Medicamentos Medicamentos `xml:"medicamentos"`
+	Insumos      Insumos      `xml:"insumos"`
+}
+
+//MensagemSNGPCInventario
 type MensagemSNGPCInventario struct {
-	XMLName   xml.Name  `xml:"mensagemSNGPCInventario"`
-	Cabecalho Cabecalho `xml:"cabecalho"`
-	Corpo     Corpo     `xml:"corpo"`
+	XMLName   xml.Name            `xml:"mensagemSNGPCInventario"`
+	Cabecalho CabecalhoInventario `xml:"cabecalho"`
+	Corpo     CorpoInventario     `xml:"corpo"`
 }
 
+//MensagemSNGPC
+type MensagemSNGPC struct {
+	XMLName   xml.Name              `xml:"mensagemSNGPC"`
+	Cabecalho CabecalhoMovimentacao `xml:"cabecalho"`
+	Corpo     CorpoMovimentacao     `xml:"corpo"`
+}
+
+func (s MensagemSNGPC) String() string {
+	return fmt.Sprintf("%v\n%v", s.Cabecalho, s.Corpo)
+}
+
+func (s CabecalhoMovimentacao) String() string {
+	return fmt.Sprintf("cnpj : %v ; cpf : %v ; inicio : %v, fim : %v\n", s.CnpjEmissor, s.CpfTransmissor, s.DataInicio, s.DataFim)
+}
+
+func (s CorpoMovimentacao) String() string {
+	out := "corpo\n"
+	out += string(len(s.Medicamentos.SaidaMedicamentoVendaAoConsumidor))
+
+	for _, s := range s.Medicamentos.SaidaMedicamentoVendaAoConsumidor {
+		for _, m := range s.MedicamentoVenda {
+			out += fmt.Sprintf("medicamento : %v, lote : %v, quantidade : %v\n", m.RegistroMSMedicamento, m.NumeroLoteMedicamento, m.QuantidadeMedicamento)
+		}
+	}
+	return out
+}
+
+//Inventario
 func (s MensagemSNGPCInventario) String() string {
 	return fmt.Sprintf("%v\n%v", s.Cabecalho, s.Corpo)
 }
 
-func (s Cabecalho) String() string {
-	return fmt.Sprintf("cnpj : %v ; cpf : %v ; data : %v\n", s.CnpjEmissor, s.CpfTransmissor, s.Data)
+func (s CabecalhoInventario) String() string {
+	return fmt.Sprintf("Inventário :\nCNPJ : %v ; CPF : %v ; Data : %v\n", s.CnpjEmissor, s.CpfTransmissor, s.Data)
 }
 
-func (s Corpo) String() string {
-	return fmt.Sprintf("medicamentos : %v ; insumos : %v\n", s.Medicamentos, s.Insumos)
+func (s CorpoInventario) String() string {
+	return fmt.Sprintf("Corpo : \nMedicamentos : \n%v\nInsumos : \n%v\n", s.Medicamentos, s.Insumos)
+}
+
+func (s Medicamentos) String() string {
+	out := ""
+
+	for _, e := range s.EntradaMedicamentos {
+		out += fmt.Sprint(e.MedicamentoEntrada)
+	}
+
+	return out
+}
+
+func (s Insumos) String() string {
+	out := ""
+
+	for _, e := range s.EntradaInsumos {
+		out += fmt.Sprint(e.InsumoEntrada)
+	}
+
+	return out
+}
+
+func (s MedicamentoEntrada) String() string {
+	return fmt.Sprintf("RegistroMS : %v, Lote : %v, Quantidade : %v\n", s.RegistroMSMedicamento, s.NumeroLoteMedicamento, s.QuantidadeMedicamento)
+}
+
+func (s InsumoEntrada) String() string {
+	return fmt.Sprintf("RegistroMS : %v, Lote : %v, Quantidade : %v\n", s.CodigoInsumo, s.NumeroLoteInsumo, s.QuantidadeInsumo)
 }
 
 func main() {
 	xmlFile, err := os.Open("inventario.xml")
-	if err != nil {
-		fmt.Println(err)
-	}
-	defer xmlFile.Close()
+	check(err)
 
 	dec := xml.NewDecoder(xmlFile)
 	dec.CharsetReader = charset.NewReaderLabel
 
-	sngpc := MensagemSNGPCInventario{}
-	err = dec.Decode(&sngpc)
-	if err != nil {
-		fmt.Println(err)
-	}
-	xmlFile.Seek(0, 0)
-	io.Copy(os.Stdout, xmlFile)
+	defer xmlFile.Close()
 
-	fmt.Printf("\n%s", sngpc)
+	_, err = xmlFile.Seek(40, 0)
+	check(err)
+
+	reader := bufio.NewReader(xmlFile)
+	buffer, err := reader.Peek(100)
+	check(err)
+
+	if strings.Contains(string(buffer), `<mensagemSNGPCInventario xmlns="urn:sngpc-schema">`) {
+
+		_, err = xmlFile.Seek(0, 0)
+		check(err)
+
+		sngpc := MensagemSNGPCInventario{}
+
+		err = dec.Decode(&sngpc)
+		check(err)
+
+		fmt.Printf("\n%s", sngpc)
+	} else if strings.Contains(string(buffer), `<mensagemSNGPC xmlns="urn:sngpc-schema">`) {
+		_, err = xmlFile.Seek(0, 0)
+		check(err)
+
+		sngpc := MensagemSNGPC{}
+
+		err = dec.Decode(&sngpc)
+		check(err)
+
+		fmt.Printf("\n%s", sngpc)
+	}
+
 }
