@@ -3,9 +3,10 @@ package main
 import (
 	"encoding/xml"
 	"fmt"
-	"io/ioutil"
+	"io"
 	"os"
-	"regexp"
+
+	"golang.org/x/net/html/charset"
 )
 
 //ClasseTerapeutica - st_classeTerapeutica
@@ -130,21 +131,22 @@ func (s Corpo) String() string {
 }
 
 func main() {
-	var sngpc MensagemSNGPCInventario
-
 	xmlFile, err := os.Open("inventario.xml")
-
 	if err != nil {
 		fmt.Println(err)
 	}
-
 	defer xmlFile.Close()
 
-	XML, _ := ioutil.ReadAll(xmlFile)
+	dec := xml.NewDecoder(xmlFile)
+	dec.CharsetReader = charset.NewReaderLabel
 
-	var re = regexp.MustCompile(`^.*(ISO-8859-1).*$`)
-	s := re.ReplaceAllString(string(XML), `asdasdasd`)
-	fmt.Println(s)
-	xml.Unmarshal([]byte(s), &sngpc)
-	fmt.Println(sngpc)
+	sngpc := MensagemSNGPCInventario{}
+	err = dec.Decode(&sngpc)
+	if err != nil {
+		fmt.Println(err)
+	}
+	xmlFile.Seek(0, 0)
+	io.Copy(os.Stdout, xmlFile)
+
+	fmt.Printf("\n%s", sngpc)
 }
