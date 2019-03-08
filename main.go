@@ -449,7 +449,7 @@ func (s CorpoMovimentacao) String() string {
 
 	for _, s := range s.Medicamentos.SaidaMedicamentoVendaAoConsumidor {
 		out += "SaidaMedicamentoVendaAoConsumidor : \n"
-		out += fmt.Sprintf("Data : %v", s.DataVendaMedicamento)
+		out += fmt.Sprintf("Data : %v\n", s.DataVendaMedicamento)
 		for _, m := range s.MedicamentoVenda {
 			out += fmt.Sprintf("Medicamento : %v, Lote : %v, Quantidade : %v\n", m.RegistroMSMedicamento, m.NumeroLoteMedicamento, m.QuantidadeMedicamento)
 		}
@@ -499,7 +499,7 @@ func (s InsumoEntrada) String() string {
 }
 
 func main() {
-	xmlFile, err := os.Open("sngpc.xml")
+	xmlFile, err := os.Open("mensagemSNGPC.sample.xml")
 	check(err)
 
 	dec := xml.NewDecoder(xmlFile)
