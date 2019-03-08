@@ -1,7 +1,5 @@
 package sngpc
 
-import "fmt"
-
 //Medicamento
 // <complexType name="ct_Medicamento">
 //     <sequence>
@@ -12,10 +10,10 @@ import "fmt"
 //     </sequence>
 //   </complexType>
 type Medicamento struct {
-	RegistroMSMedicamento    string `xml:"registroMSMedicamento"`
-	NumeroLoteMedicamento    string `xml:"numeroLoteMedicamento"`
-	QuantidadeMedicamento    string `xml:"quantidadeMedicamento"`
-	UnidadeMedidaMedicamento string `xml:"unidadeMedidaMedicamento"`
+	RegistroMSMedicamento    string                   `xml:"registroMSMedicamento"`
+	NumeroLoteMedicamento    string                   `xml:"numeroLoteMedicamento"`
+	QuantidadeMedicamento    string                   `xml:"quantidadeMedicamento"`
+	UnidadeMedidaMedicamento UnidadeMedidaMedicamento `xml:"unidadeMedidaMedicamento"`
 }
 
 //MedicamentoVenda
@@ -29,33 +27,11 @@ type Medicamento struct {
 // </sequence>
 // </complexType>
 type MedicamentoVenda struct {
-	UsoProlongado            string `xml:"usoProlongado"`
-	RegistroMSMedicamento    string `xml:"registroMSMedicamento"`
-	NumeroLoteMedicamento    string `xml:"numeroLoteMedicamento"`
-	QuantidadeMedicamento    uint   `xml:"quantidadeMedicamento"`
-	UnidadeMedidaMedicamento uint8  `xml:"unidadeMedidaMedicamento"`
-}
-
-//MedicamentoEntrada type struct
-// <complexType name="ct_MedicamentoEntrada">
-// <sequence>
-//   <element name="classeTerapeutica" type="sngpc:st_classeTerapeutica" />
-//   <element name="registroMSMedicamento" type="sngpc:st_RegistroMS" />
-//   <element name="numeroLoteMedicamento" type="sngpc:st_Lote" />
-//   <element name="quantidadeMedicamento" type="sngpc:st_QuantidadeMedicamento" />
-//   <element name="unidadeMedidaMedicamento" type="sngpc:st_UnidadeMedidaMedicamento" />
-// </sequence>
-// </complexType>
-type MedicamentoEntrada struct {
-	ClasseTerapeutica        uint8  `xml:"classeTerapeutica"`
-	RegistroMSMedicamento    string `xml:"registroMSMedicamento"`
-	NumeroLoteMedicamento    string `xml:"numeroLoteMedicamento"`
-	QuantidadeMedicamento    uint   `xml:"quantidadeMedicamento"`
-	UnidadeMedidaMedicamento uint8  `xml:"unidadeMedidaMedicamento"`
-}
-
-func (s MedicamentoEntrada) String() string {
-	return fmt.Sprintf("RegistroMS : %v, Lote : %v, Quantidade : %v\n", s.RegistroMSMedicamento, s.NumeroLoteMedicamento, s.QuantidadeMedicamento)
+	UsoProlongado            string                   `xml:"usoProlongado"`
+	RegistroMSMedicamento    string                   `xml:"registroMSMedicamento"`
+	NumeroLoteMedicamento    string                   `xml:"numeroLoteMedicamento"`
+	QuantidadeMedicamento    uint                     `xml:"quantidadeMedicamento"`
+	UnidadeMedidaMedicamento UnidadeMedidaMedicamento `xml:"unidadeMedidaMedicamento"`
 }
 
 //NotaFiscal
@@ -86,16 +62,15 @@ type NotaFiscal struct {
 // </sequence>
 // </complexType>
 type MedicamentoSaidaTransformacao struct {
-	RegistroMSMedicamento   string  `xml:"registroMSMedicamento"`
-	NumeroLoteMedicamento   string  `xml:"numeroLoteMedicamento"`
-	QuantidadeInsumo        float32 `xml:"quantidadeInsumo"`
-	UnidadeDeMedidaDoInsumo uint8   `xml:"unidadeDeMedidaDoInsumo"`
+	RegistroMSMedicamento   string            `xml:"registroMSMedicamento"`
+	NumeroLoteMedicamento   string            `xml:"numeroLoteMedicamento"`
+	QuantidadeInsumo        float32           `xml:"quantidadeInsumo"`
+	UnidadeDeMedidaDoInsumo TipoUnidadeInsumo `xml:"unidadeDeMedidaDoInsumo"`
 }
 
 //MedicamentoTransformacao
 // <complexType name="ct_MedicamentoTransformacao">
 // <sequence>
-//   <!--<element name="classeTerapeutica" type = "sngpc:st_classeTerapeutica" />-->
 //   <element name="registroMSMedicamento" type="sngpc:st_RegistroMS" />
 //   <element name="numeroLoteMedicamento" type="sngpc:st_Lote" />
 //   <element name="quantidadeMedicamento" type="sngpc:st_QuantidadeMedicamento" />
@@ -105,12 +80,12 @@ type MedicamentoSaidaTransformacao struct {
 // </sequence>
 // </complexType>
 type MedicamentoTransformacao struct {
-	RegistroMSMedicamento    string  `xml:"registroMSMedicamento"`
-	NumeroLoteMedicamento    string  `xml:"numeroLoteMedicamento"`
-	QuantidadeMedicamento    string  `xml:"quantidadeMedicamento"`
-	UnidadeMedidaMedicamento string  `xml:"unidadeMedidaMedicamento"`
-	QuantidadeInsumo         float32 `xml:"quantidadeInsumo"`
-	UnidadeDeMedidaDoInsumo  string  `xml:"unidadeDeMedidaDoInsumo"`
+	RegistroMSMedicamento    string                   `xml:"registroMSMedicamento"`
+	NumeroLoteMedicamento    string                   `xml:"numeroLoteMedicamento"`
+	QuantidadeMedicamento    string                   `xml:"quantidadeMedicamento"`
+	UnidadeMedidaMedicamento UnidadeMedidaMedicamento `xml:"unidadeMedidaMedicamento"`
+	QuantidadeInsumo         float32                  `xml:"quantidadeInsumo"`
+	UnidadeDeMedidaDoInsumo  TipoUnidadeInsumo        `xml:"unidadeDeMedidaDoInsumo"`
 }
 
 //MedicamentoTransformacaoVenda
@@ -126,13 +101,13 @@ type MedicamentoTransformacao struct {
 // </sequence>
 // </complexType>
 type MedicamentoTransformacaoVenda struct {
-	UsoProlongado                              string  `xml:"usoProlongado"`
-	RegistroMSMedicamento                      string  `xml:"registroMSMedicamento"`
-	NumeroLoteMedicamento                      string  `xml:"numeroLoteMedicamento"`
-	QuantidadeDeInsumoPorUnidadeFarmacotecnica float32 `xml:"quantidadeDeInsumoPorUnidadeFarmacotecnica"`
-	UnidadeDeMedidaDoInsumo                    uint8   `xml:"unidadeDeMedidaDoInsumo"`
-	UnidadeFarmacotecnica                      uint8   `xml:"unidadeFarmacotecnica"`
-	QuantidadeDeUnidadesFarmacotecnicas        float32 `xml:"quantidadeDeUnidadesFarmacotecnicas"`
+	UsoProlongado                              string                    `xml:"usoProlongado"`
+	RegistroMSMedicamento                      string                    `xml:"registroMSMedicamento"`
+	NumeroLoteMedicamento                      string                    `xml:"numeroLoteMedicamento"`
+	QuantidadeDeInsumoPorUnidadeFarmacotecnica float32                   `xml:"quantidadeDeInsumoPorUnidadeFarmacotecnica"`
+	UnidadeDeMedidaDoInsumo                    TipoUnidadeInsumo         `xml:"unidadeDeMedidaDoInsumo"`
+	UnidadeFarmacotecnica                      TipoUnidadeFarmacotecnica `xml:"unidadeFarmacotecnica"`
+	QuantidadeDeUnidadesFarmacotecnicas        float32                   `xml:"quantidadeDeUnidadesFarmacotecnicas"`
 }
 
 //Insumo
@@ -158,9 +133,9 @@ type Insumo struct {
 //     </sequence>
 //   </complexType>
 type InsumoEntrada struct {
-	InsumoEntrada           Insumo  `xml:"insumoEntrada"`
-	QuantidadeInsumoEntrada float32 `xml:"quantidadeInsumoEntrada"`
-	TipoUnidadeEntrada      uint8   `xml:"tipoUnidadeEntrada"`
+	InsumoEntrada           Insumo            `xml:"insumoEntrada"`
+	QuantidadeInsumoEntrada float32           `xml:"quantidadeInsumoEntrada"`
+	TipoUnidadeEntrada      TipoUnidadeInsumo `xml:"tipoUnidadeEntrada"`
 }
 
 //InsumoTransferencia
@@ -172,9 +147,9 @@ type InsumoEntrada struct {
 // </sequence>
 // </complexType>
 type InsumoTransferencia struct {
-	InsumoTransferencia           Insumo  `xml:"insumoTransferencia"`
-	QuantidadeInsumoTransferencia float32 `xml:"quantidadeInsumoTransferencia"`
-	TipoUnidadeTransferencia      uint8   `xml:"tipoUnidadeTransferencia"`
+	InsumoTransferencia           Insumo            `xml:"insumoTransferencia"`
+	QuantidadeInsumoTransferencia float32           `xml:"quantidadeInsumoTransferencia"`
+	TipoUnidadeTransferencia      TipoUnidadeInsumo `xml:"tipoUnidadeTransferencia"`
 }
 
 //InsumoPerda
@@ -186,9 +161,9 @@ type InsumoTransferencia struct {
 // </sequence>
 // </complexType>
 type InsumoPerda struct {
-	InsumoPerda           Insumo  `xml:"insumoPerda"`
-	QuantidadeInsumoPerda float32 `xml:"quantidadeInsumoPerda"`
-	TipoUnidadePerda      uint8   `xml:"tipoUnidadePerda"`
+	InsumoPerda           Insumo            `xml:"insumoPerda"`
+	QuantidadeInsumoPerda float32           `xml:"quantidadeInsumoPerda"`
+	TipoUnidadePerda      TipoUnidadeInsumo `xml:"tipoUnidadePerda"`
 }
 
 //InsumoVendaAoConsumidor
@@ -203,12 +178,12 @@ type InsumoPerda struct {
 // </sequence>
 // </complexType>
 type InsumoVendaAoConsumidor struct {
-	UsoProlongado                              uint8  `xml:"usoProlongado"`
-	InsumoVendaAoConsumidor                    Insumo `xml:"insumoVendaAoConsumidor"`
-	QuantidadeDeInsumoPorUnidadeFarmacotecnica string `xml:"quantidadeDeInsumoPorUnidadeFarmacotecnica"`
-	UnidadeDeMedidaDoInsumo                    string `xml:"unidadeDeMedidaDoInsumo"`
-	UnidadeFarmacotecnica                      string `xml:"unidadeFarmacotecnica"`
-	QuantidadeDeUnidadesFarmacotecnicas        string `xml:"quantidadeDeUnidadesFarmacotecnicas"`
+	UsoProlongado                              uint8                     `xml:"usoProlongado"`
+	InsumoVendaAoConsumidor                    Insumo                    `xml:"insumoVendaAoConsumidor"`
+	QuantidadeDeInsumoPorUnidadeFarmacotecnica string                    `xml:"quantidadeDeInsumoPorUnidadeFarmacotecnica"`
+	UnidadeDeMedidaDoInsumo                    TipoUnidadeInsumo         `xml:"unidadeDeMedidaDoInsumo"`
+	UnidadeFarmacotecnica                      TipoUnidadeFarmacotecnica `xml:"unidadeFarmacotecnica"`
+	QuantidadeDeUnidadesFarmacotecnicas        float32                   `xml:"quantidadeDeUnidadesFarmacotecnicas"`
 }
 
 //Comprador
@@ -222,11 +197,11 @@ type InsumoVendaAoConsumidor struct {
 // </sequence>
 // </complexType>
 type Comprador struct {
-	NomeComprador      string `xml:"nomeComprador"`
-	TipoDocumento      uint8  `xml:"tipoDocumento"`
-	NumeroDocumento    string `xml:"numeroDocumento"`
-	OrgaoExpedidor     string `xml:"orgaoExpedidor"`
-	UFEmissaoDocumento string `xml:"UFEmissaoDocumento"`
+	NomeComprador      string         `xml:"nomeComprador"`
+	TipoDocumento      TipoDocumento  `xml:"tipoDocumento"`
+	NumeroDocumento    string         `xml:"numeroDocumento"`
+	OrgaoExpedidor     OrgaoExpedidor `xml:"orgaoExpedidor"`
+	UFEmissaoDocumento UF             `xml:"UFEmissaoDocumento"`
 }
 
 //Prescritor
@@ -239,10 +214,10 @@ type Comprador struct {
 //     </sequence>
 //   </complexType>
 type Prescritor struct {
-	NomePrescritor             string `xml:"nomePrescritor"`
-	NumeroRegistroProfissional string `xml:"numeroRegistroProfissional"`
-	ConselhoProfissional       string `xml:"conselhoProfissional"`
-	UFConselho                 string `xml:"UFConselho"`
+	NomePrescritor             string               `xml:"nomePrescritor"`
+	NumeroRegistroProfissional string               `xml:"numeroRegistroProfissional"`
+	ConselhoProfissional       ConselhoProfissional `xml:"conselhoProfissional"`
+	UFConselho                 UF                   `xml:"UFConselho"`
 }
 
 // ct_Retorno
@@ -271,11 +246,11 @@ type Prescritor struct {
 // </sequence>
 // </complexType>
 type Paciente struct {
-	Nome         string `xml:"nome"`
-	Idade        string `xml:"idade"`
-	UnidadeIdade string `xml:"unidadeIdade"`
-	Sexo         string `xml:"sexo"`
-	Cid          string `xml:"cid"`
+	Nome         string       `xml:"nome"`
+	Idade        string       `xml:"idade"`
+	UnidadeIdade UnidadeIdade `xml:"unidadeIdade"`
+	Sexo         Sexo         `xml:"sexo"`
+	Cid          string       `xml:"cid"`
 }
 
 //InsumoBasico
@@ -289,33 +264,9 @@ type Paciente struct {
 // </sequence>
 // </complexType>
 type InsumoBasico struct {
-	CodigoInsumo         string  `xml:"codigoInsumo"`
-	NumeroLoteInsumo     string  `xml:"numeroLoteInsumo"`
-	InsumoCNPJFornecedor string  `xml:"insumoCNPJFornecedor"`
-	QuantidadeInsumo     float32 `xml:"quantidadeInsumo"`
-	TipoUnidade          uint8   `xml:"tipoUnidade"`
-}
-
-//InsumoBasicoEntrada
-// <complexType name="ct_InsumoBasicoEntrada">
-// <sequence>
-//   <element name="classeTerapeutica" type="sngpc:st_classeTerapeutica" />
-//   <element name="codigoInsumo" type="sngpc:st_CodigoDCB" />
-//   <element name="numeroLoteInsumo" type="sngpc:st_Lote" />
-//   <element name="insumoCNPJFornecedor" type="sngpc:st_CNPJ" />
-//   <element name="quantidadeInsumo" type="sngpc:st_QuantidadeInsumo" />
-//   <element name="tipoUnidade" type="sngpc:st_TipoUnidadeInsumo" />
-// </sequence>
-// </complexType>
-type InsumoBasicoEntrada struct {
-	ClasseTerapeutica    ClasseTerapeutica `xml:"classeTerapeutica"`
 	CodigoInsumo         string            `xml:"codigoInsumo"`
 	NumeroLoteInsumo     string            `xml:"numeroLoteInsumo"`
 	InsumoCNPJFornecedor string            `xml:"insumoCNPJFornecedor"`
 	QuantidadeInsumo     float32           `xml:"quantidadeInsumo"`
-	UnidadeMedidaInsumo  uint8             `xml:"unidadeMedidaInsumo"`
-}
-
-func (s InsumoBasicoEntrada) String() string {
-	return fmt.Sprintf("RegistroMS : %v, Lote : %v, Quantidade : %v\n", s.CodigoInsumo, s.NumeroLoteInsumo, s.QuantidadeInsumo)
+	TipoUnidade          TipoUnidadeInsumo `xml:"tipoUnidade"`
 }
