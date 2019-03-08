@@ -1,6 +1,8 @@
-# sngpc-anonimizador
+# sngpc-go
 
-O objetivo deste projeto, é remover todos os dados que possam identificar pessoas e/ou empresas, e sintetizar apenas dados demográfios e estatísticos.
+Este projeto tem por objetivo inicial criar um parser para o XML do SNGPC.
+
+Com isto, será possível remover todos os dados que possam identificar pessoas e/ou empresas, e sintetizar apenas dados demográfios e estatísticos.
 
 Tais dados podem ser utilizados para pesquisas acerca da incidência das prescrições de substâncias e correlacioná-las com outras fontes de dados.
 
