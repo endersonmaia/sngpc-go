@@ -18,7 +18,7 @@ func check(e error) {
 }
 
 func main() {
-	xmlFile, err := os.Open("mensagemSNGPC.sample.xml")
+	xmlFile, err := os.Open("mensagemSNGPCInventario.sample.xml")
 	check(err)
 
 	dec := xml.NewDecoder(xmlFile)
@@ -38,22 +38,22 @@ func main() {
 		_, err = xmlFile.Seek(0, 0)
 		check(err)
 
-		sngpc := sngpc.MensagemSNGPCInventario{}
+		mysngpc := sngpc.MensagemSNGPCInventario{}
 
-		err = dec.Decode(&sngpc)
+		err = dec.Decode(&mysngpc)
 		check(err)
 
-		fmt.Printf("\n%s", sngpc)
+		fmt.Printf("\n%s", mysngpc)
 	} else if strings.Contains(string(buffer), `<mensagemSNGPC xmlns="urn:sngpc-schema">`) {
 		_, err = xmlFile.Seek(0, 0)
 		check(err)
 
-		sngpc := sngpc.MensagemSNGPC{}
+		mysngpc := sngpc.MensagemSNGPC{}
 
-		err = dec.Decode(&sngpc)
+		err = dec.Decode(&mysngpc)
 		check(err)
 
-		fmt.Printf("\n%s", sngpc)
+		fmt.Printf("\n%s", mysngpc)
 	}
 
 }

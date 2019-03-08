@@ -8,10 +8,8 @@ type MensagemSNGPC struct {
 	Corpo     CorpoMovimentacao     `xml:"corpo"`
 }
 
-//Corpo
-type CorpoMovimentacao struct {
-	Medicamentos Medicamentos `xml:"medicamentos"`
-	Insumos      Insumos      `xml:"insumos"`
+func (s MensagemSNGPC) String() string {
+	return fmt.Sprintf("%v\n%v", s.Cabecalho, s.Corpo)
 }
 
 //CabecalhoMovimentacao
@@ -30,6 +28,37 @@ type CabecalhoMovimentacao struct {
 	DataFim        string `xml:"dataFim"`
 }
 
+func (s CabecalhoMovimentacao) String() string {
+	return fmt.Sprintf("cnpj : %v ; cpf : %v ; inicio : %v, fim : %v\n", s.CnpjEmissor, s.CpfTransmissor, s.DataInicio, s.DataFim)
+}
+
+//Corpo
+type CorpoMovimentacao struct {
+	Medicamentos Medicamentos `xml:"medicamentos"`
+	Insumos      Insumos      `xml:"insumos"`
+}
+
+func (s CorpoMovimentacao) String() string {
+	out := "Corpo : \n"
+
+	for _, s := range s.Medicamentos.EntradaMedicamentos {
+		out += "EntradaMedicamentos : \n"
+		out += fmt.Sprintf("NF : %v, Data: %v\n", s.NotaFiscalEntradaMedicamento.NumeroNotaFiscal, s.DataRecebimentoMedicamento)
+		for _, m := range s.MedicamentoEntrada {
+			out += fmt.Sprintf("Medicamento : %v, Lote : %v, Quantidade : %v, Classe : %v\n", m.RegistroMSMedicamento, m.NumeroLoteMedicamento, m.QuantidadeMedicamento, m.ClasseTerapeutica)
+		}
+	}
+
+	for _, s := range s.Medicamentos.SaidaMedicamentoVendaAoConsumidor {
+		out += "SaidaMedicamentoVendaAoConsumidor : \n"
+		out += fmt.Sprintf("Data : %v\n", s.DataVendaMedicamento)
+		for _, m := range s.MedicamentoVenda {
+			out += fmt.Sprintf("Medicamento : %v, Lote : %v, Quantidade : %v\n", m.RegistroMSMedicamento, m.NumeroLoteMedicamento, m.QuantidadeMedicamento)
+		}
+	}
+	return out
+}
+
 //Insumos
 // <element name="insumos">
 // <complexType>
@@ -41,7 +70,6 @@ type CabecalhoMovimentacao struct {
 //   </sequence>
 // </complexType>
 // </element>
-
 type Insumos struct {
 	EntradaInsumos               []EntradaInsumo            `xml:"entradaInsumos"`
 	SaidaInsumoVendaAoConsumidor []SaidaInsumoVenda         `xml:"saidaInsumoVendaAoConsumidor"`
@@ -90,34 +118,5 @@ func (s Medicamentos) String() string {
 		out += fmt.Sprint(e.MedicamentoEntrada)
 	}
 
-	return out
-}
-
-func (s MensagemSNGPC) String() string {
-	return fmt.Sprintf("%v\n%v", s.Cabecalho, s.Corpo)
-}
-
-func (s CabecalhoMovimentacao) String() string {
-	return fmt.Sprintf("cnpj : %v ; cpf : %v ; inicio : %v, fim : %v\n", s.CnpjEmissor, s.CpfTransmissor, s.DataInicio, s.DataFim)
-}
-
-func (s CorpoMovimentacao) String() string {
-	out := "Corpo : \n"
-
-	for _, s := range s.Medicamentos.EntradaMedicamentos {
-		out += "EntradaMedicamentos : \n"
-		out += fmt.Sprintf("NF : %v, Data: %v\n", s.NotaFiscalEntradaMedicamento.NumeroNotaFiscal, s.DataRecebimentoMedicamento)
-		for _, m := range s.MedicamentoEntrada {
-			out += fmt.Sprintf("Medicamento : %v, Lote : %v, Quantidade : %v\n", m.RegistroMSMedicamento, m.NumeroLoteMedicamento, m.QuantidadeMedicamento)
-		}
-	}
-
-	for _, s := range s.Medicamentos.SaidaMedicamentoVendaAoConsumidor {
-		out += "SaidaMedicamentoVendaAoConsumidor : \n"
-		out += fmt.Sprintf("Data : %v\n", s.DataVendaMedicamento)
-		for _, m := range s.MedicamentoVenda {
-			out += fmt.Sprintf("Medicamento : %v, Lote : %v, Quantidade : %v\n", m.RegistroMSMedicamento, m.NumeroLoteMedicamento, m.QuantidadeMedicamento)
-		}
-	}
 	return out
 }
