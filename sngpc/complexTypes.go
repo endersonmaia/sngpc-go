@@ -1,39 +1,32 @@
 package sngpc
 
-import "encoding/xml"
-
 //MensagemSNGPCInventario
 type MensagemSNGPCInventario struct {
-	XMLName   xml.Name            `xml:"mensagemSNGPCInventario"`
 	Cabecalho CabecalhoInventario `xml:"cabecalho"`
 	Corpo     CorpoInventario     `xml:"corpo"`
 }
 
 //CabecalhoInventario
 type CabecalhoInventario struct {
-	XMLName        xml.Name `xml:"cabecalho"`
-	CnpjEmissor    string   `xml:"cnpjEmissor"`
-	CpfTransmissor string   `xml:"cpfTransmissor"`
-	Data           string   `xml:"data"`
+	CnpjEmissor    string `xml:"cnpjEmissor"`
+	CpfTransmissor string `xml:"cpfTransmissor"`
+	Data           string `xml:"data"`
 }
 
 //Corpo
 type CorpoInventario struct {
-	XMLName      xml.Name     `xmml:"corpo"`
 	Medicamentos Medicamentos `xml:"medicamentos"`
 	Insumos      Insumos      `xml:"insumos"`
 }
 
 //MensagemSNGPC
 type MensagemSNGPC struct {
-	XMLName   xml.Name              `xml:"mensagemSNGPC"`
 	Cabecalho CabecalhoMovimentacao `xml:"cabecalho"`
 	Corpo     CorpoMovimentacao     `xml:"corpo"`
 }
 
 //Corpo
 type CorpoMovimentacao struct {
-	XMLName      xml.Name     `xmml:"corpo"`
 	Medicamentos Medicamentos `xml:"medicamentos"`
 	Insumos      Insumos      `xml:"insumos"`
 }
@@ -48,34 +41,30 @@ type CorpoMovimentacao struct {
 // </sequence>
 // </complexType>
 type CabecalhoMovimentacao struct {
-	XMLName        xml.Name `xml:"cabecalho"`
-	CnpjEmissor    string   `xml:"cnpjEmissor"`
-	CpfTransmissor string   `xml:"cpfTransmissor"`
-	DataInicio     string   `xml:"dataInicio"`
-	DataFim        string   `xml:"dataFim"`
+	CnpjEmissor    string `xml:"cnpjEmissor"`
+	CpfTransmissor string `xml:"cpfTransmissor"`
+	DataInicio     string `xml:"dataInicio"`
+	DataFim        string `xml:"dataFim"`
 }
 
 //Insumos
 type Insumos struct {
-	XMLName        xml.Name         `xml:"insumos"`
 	EntradaInsumos []EntradaInsumos `xml:"entradaInsumos"`
 }
 
 //EntradaInsumos
 type EntradaInsumos struct {
-	XMLName       xml.Name      `xml:"entradaInsumos"`
 	InsumoEntrada InsumoEntrada `xml:"insumoEntrada"`
 }
 
 //InsumoEntrada
 type InsumoEntrada struct {
-	XMLName              xml.Name `xml:"insumoEntrada"`
-	ClasseTerapeutica    uint     `xml:"classeTerapeutica"`
-	CodigoInsumo         string   `xml:"codigoInsumo"`
-	NumeroLoteInsumo     string   `xml:"numeroLoteInsumo"`
-	InsumoCNPJFornecedor string   `xml:"insumoCNPJFornecedor"`
-	QuantidadeInsumo     float32  `xml:"quantidadeInsumo"`
-	UnidadeMedidaInsumo  uint     `xml:"unidadeMedidaInsumo"`
+	ClasseTerapeutica    uint    `xml:"classeTerapeutica"`
+	CodigoInsumo         string  `xml:"codigoInsumo"`
+	NumeroLoteInsumo     string  `xml:"numeroLoteInsumo"`
+	InsumoCNPJFornecedor string  `xml:"insumoCNPJFornecedor"`
+	QuantidadeInsumo     float32 `xml:"quantidadeInsumo"`
+	UnidadeMedidaInsumo  uint    `xml:"unidadeMedidaInsumo"`
 }
 
 //Medicamentos
@@ -93,7 +82,6 @@ type InsumoEntrada struct {
 // 	</complexType>
 //</element>
 type Medicamentos struct {
-	XMLName                                        xml.Name                                         `xml:"medicamentos"`
 	EntradaMedicamentos                            []EntradaMedicamentos                            `xml:"entradaMedicamentos"`
 	SaidaMedicamentoVendaAoConsumidor              []SaidaMedicamentoVendaAoConsumidor              `xml:"saidaMedicamentoVendaAoConsumidor"`
 	SaidaMedicamentoTransferencia                  []SaidaMedicamentoTransferencia                  `xml:"saidaMedicamentoTransferencia"`
@@ -112,7 +100,6 @@ type Medicamentos struct {
 // </sequence>
 // </complexType>
 type EntradaMedicamentos struct {
-	XMLName                      xml.Name             `xml:"entradaMedicamentos"`
 	NotaFiscalEntradaMedicamento NotaFiscal           `xml:"notaFiscalEntradaMedicamento"`
 	MedicamentoEntrada           []MedicamentoEntrada `xml:"medicamentoEntrada"`
 	DataRecebimentoMedicamento   string               `xml:"dataRecebimentoMedicamento"`
@@ -133,7 +120,6 @@ type EntradaMedicamentos struct {
 // </sequence>
 // </complexType>
 type SaidaMedicamentoVendaAoConsumidor struct {
-	XMLName                      xml.Name           `xml:"saidaMedicamentoVendaAoConsumidor"`
 	TipoReceituarioMedicamento   uint8              `xml:"tipoReceituarioMedicamento"`
 	NumeroNotificacaoMedicamento string             `xml:"numeroNotificacaoMedicamento"`
 	DataPrescricaoMedicamento    string             `xml:"dataPrescricaoMedicamento"`
@@ -154,7 +140,6 @@ type SaidaMedicamentoVendaAoConsumidor struct {
 // </sequence>
 // </complexType>
 type SaidaMedicamentoTransferencia struct {
-	XMLName                            xml.Name      `xml:"saidaMedicamentoTransferencia"`
 	NotaFiscalTransferenciaMedicamento NotaFiscal    `xml:"notaFiscalTransferenciaMedicamento"`
 	MedicamentoTransferencia           []Medicamento `xml:"medicamentoTransferencia"`
 	DataTransferenciaMedicamento       string        `xml:"dataTransferenciaMedicamento"`
@@ -169,7 +154,6 @@ type SaidaMedicamentoTransferencia struct {
 // </sequence>
 // </complexType>
 type SaidaMedicamentoPerda struct {
-	XMLName                xml.Name    `xml:"saidaMedicamentoPerda"`
 	MotivoPerdaMedicamento uint8       `xml:"motivoPerdaMedicamento"`
 	MedicamentoPerda       Medicamento `xml:"medicamentoPerda"`
 	DataPerdaMedicamento   string      `xml:"dataPerdaMedicamento"`
@@ -183,7 +167,6 @@ type SaidaMedicamentoPerda struct {
 // </sequence>
 // </complexType>
 type EntradaMedicamentoTransformacao struct {
-	XMLName                         xml.Name                   `xml:"entradaMedicamentoTransformacao"`
 	MedicamentoTransformacaoEntrada []MedicamentoTransformacao `xml:"medicamentoTransformacaoEntrada"`
 	DataTransformacaoEntrada        string                     `xml:"DataTransformacaoEntrada"`
 }
@@ -203,7 +186,6 @@ type EntradaMedicamentoTransformacao struct {
 // </sequence>
 // </complexType>
 type SaidaMedicamentoTransformacaoVendaAoConsumidor struct {
-	XMLName                      xml.Name                        `xml:"saidaMedicamentoVendaAoConsumidor"`
 	TipoReceituarioMedicamento   uint8                           `xml:"tipoReceituarioMedicamento"`
 	NumeroNotificacaoMedicamento string                          `xml:"numeroNotificacaoMedicamento"`
 	DataPrescricaoMedicamento    string                          `xml:"dataPrescricaoMedicamento"`
@@ -347,12 +329,11 @@ type Comprador struct {
 // </sequence>
 // </complexType>
 type MedicamentoVenda struct {
-	XMLName                  xml.Name `xml:"medicamentoVenda"`
-	UsoProlongado            string   `xml:"usoProlongado"`
-	RegistroMSMedicamento    string   `xml:"registroMSMedicamento"`
-	NumeroLoteMedicamento    string   `xml:"numeroLoteMedicamento"`
-	QuantidadeMedicamento    uint     `xml:"quantidadeMedicamento"`
-	UnidadeMedidaMedicamento uint8    `xml:"unidadeMedidaMedicamento"`
+	UsoProlongado            string `xml:"usoProlongado"`
+	RegistroMSMedicamento    string `xml:"registroMSMedicamento"`
+	NumeroLoteMedicamento    string `xml:"numeroLoteMedicamento"`
+	QuantidadeMedicamento    uint   `xml:"quantidadeMedicamento"`
+	UnidadeMedidaMedicamento uint8  `xml:"unidadeMedidaMedicamento"`
 }
 
 //MedicamentoTransformacaoVenda
@@ -406,10 +387,9 @@ type Paciente struct {
 // </sequence>
 // </complexType>
 type MedicamentoEntrada struct {
-	XMLName                  xml.Name `xml:"medicamentoEntrada"`
-	ClasseTerapeutica        uint8    `xml:"classeTerapeutica"`
-	RegistroMSMedicamento    string   `xml:"registroMSMedicamento"`
-	NumeroLoteMedicamento    string   `xml:"numeroLoteMedicamento"`
-	QuantidadeMedicamento    uint     `xml:"quantidadeMedicamento"`
-	UnidadeMedidaMedicamento uint8    `xml:"unidadeMedidaMedicamento"`
+	ClasseTerapeutica        uint8  `xml:"classeTerapeutica"`
+	RegistroMSMedicamento    string `xml:"registroMSMedicamento"`
+	NumeroLoteMedicamento    string `xml:"numeroLoteMedicamento"`
+	QuantidadeMedicamento    uint   `xml:"quantidadeMedicamento"`
+	UnidadeMedidaMedicamento uint8  `xml:"unidadeMedidaMedicamento"`
 }
