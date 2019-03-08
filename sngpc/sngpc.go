@@ -1,7 +1,10 @@
 package sngpc
 
 import (
+	"bytes"
 	"fmt"
+	"strings"
+	"text/template"
 )
 
 func (s MensagemSNGPC) String() string {
@@ -13,24 +16,26 @@ func (s CabecalhoMovimentacao) String() string {
 }
 
 func (s CorpoMovimentacao) String() string {
-	out := "Corpo : \n"
+	text := `Corpo : 
+{{ range .Medicamentos.EntradaMedicamentos -}}
+EntradaMedicamentos : 
+NF : {{ .NotaFiscalEntradaMedicamento.NumeroNotaFiscal }}, Data: {{ .DataRecebimentoMedicamento }}
+{{ range .MedicamentoEntrada -}}
+Medicamento : {{ .RegistroMSMedicamento }}, Lote : {{ .NumeroLoteMedicamento }}, Quantidade : {{ .QuantidadeMedicamento }}
+{{ end }}
+{{ end }}
+{{- range .Medicamentos.SaidaMedicamentoVendaAoConsumidor }}
+SaidaMedicamentoVendaAoConsumidor : 
+Data : {{ .DataVendaMedicamento }}
+{{ range .MedicamentoVenda -}}
+Medicamento : {{ .RegistroMSMedicamento }}, Lote : {{ .NumeroLoteMedicamento }}, Quantidade : {{ .QuantidadeMedicamento }}
+{{ end }}
+{{ end }}`
+	tmpl := template.Must(template.New("").Parse(text))
+	var out bytes.Buffer
+	tmpl.Execute(&out, s)
 
-	for _, s := range s.Medicamentos.EntradaMedicamentos {
-		out += "EntradaMedicamentos : \n"
-		out += fmt.Sprintf("NF : %v, Data: %v\n", s.NotaFiscalEntradaMedicamento.NumeroNotaFiscal, s.DataRecebimentoMedicamento)
-		for _, m := range s.MedicamentoEntrada {
-			out += fmt.Sprintf("Medicamento : %v, Lote : %v, Quantidade : %v\n", m.RegistroMSMedicamento, m.NumeroLoteMedicamento, m.QuantidadeMedicamento)
-		}
-	}
-
-	for _, s := range s.Medicamentos.SaidaMedicamentoVendaAoConsumidor {
-		out += "SaidaMedicamentoVendaAoConsumidor : \n"
-		out += fmt.Sprintf("Data : %v\n", s.DataVendaMedicamento)
-		for _, m := range s.MedicamentoVenda {
-			out += fmt.Sprintf("Medicamento : %v, Lote : %v, Quantidade : %v\n", m.RegistroMSMedicamento, m.NumeroLoteMedicamento, m.QuantidadeMedicamento)
-		}
-	}
-	return out
+	return out.String()
 }
 
 //Inventario
@@ -47,23 +52,23 @@ func (s CorpoInventario) String() string {
 }
 
 func (s Medicamentos) String() string {
-	out := ""
+	var pieces []string
 
 	for _, e := range s.EntradaMedicamentos {
-		out += fmt.Sprint(e.MedicamentoEntrada)
+		pieces = append(pieces, fmt.Sprint(e.MedicamentoEntrada))
 	}
 
-	return out
+	return strings.Join(pieces, "")
 }
 
 func (s Insumos) String() string {
-	out := ""
+	var pieces []string
 
 	for _, e := range s.EntradaInsumos {
-		out += fmt.Sprint(e.InsumoEntrada)
+		pieces = append(pieces, e.InsumoEntrada.String())
 	}
 
-	return out
+	return strings.Join(pieces, "")
 }
 
 func (s MedicamentoEntrada) String() string {
