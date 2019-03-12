@@ -1,4 +1,4 @@
-package sngpc
+package parser
 
 //Medicamento
 // <complexType name="ct_Medicamento">

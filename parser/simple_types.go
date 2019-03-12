@@ -1,4 +1,4 @@
-package sngpc
+package parser
 
 //st_classeTerapeutica
 type ClasseTerapeutica uint8

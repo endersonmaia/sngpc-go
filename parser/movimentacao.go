@@ -1,4 +1,4 @@
-package sngpc
+package parser
 
 import "fmt"
 

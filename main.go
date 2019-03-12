@@ -7,7 +7,7 @@ import (
 	"os"
 	"strings"
 
-	"github.com/endersonmaia/sngpc-go/sngpc"
+	"github.com/endersonmaia/sngpc/parser"
 	"golang.org/x/net/html/charset"
 )
 
@@ -38,7 +38,7 @@ func main() {
 		_, err = xmlFile.Seek(0, 0)
 		check(err)
 
-		mysngpc := sngpc.MensagemSNGPCInventario{}
+		mysngpc := parser.MensagemSNGPCInventario{}
 
 		err = dec.Decode(&mysngpc)
 		check(err)
@@ -48,7 +48,7 @@ func main() {
 		_, err = xmlFile.Seek(0, 0)
 		check(err)
 
-		mysngpc := sngpc.MensagemSNGPC{}
+		mysngpc := parser.MensagemSNGPC{}
 
 		err = dec.Decode(&mysngpc)
 		check(err)

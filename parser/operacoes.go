@@ -1,4 +1,4 @@
-package sngpc
+package parser
 
 //EntradaMedicamentos
 // <complexType name = "ct_EntradaMedicamento">
