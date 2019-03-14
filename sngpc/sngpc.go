@@ -37,8 +37,7 @@ func InventarioFromXMLPath(f string) (MensagemSNGPCInventario, error) {
 
 	msg := MensagemSNGPCInventario{}
 
-	err = dec.Decode(&msg)
-	if err != nil {
+	if err = dec.Decode(&msg); err != nil {
 		return MensagemSNGPCInventario{}, err
 	}
 
@@ -58,8 +57,7 @@ func MovimentoFromXMLPath(f string) (MensagemSNGPC, error) {
 
 	msg := MensagemSNGPC{}
 
-	err = dec.Decode(&msg)
-	if err != nil {
+	if err = dec.Decode(&msg); err != nil {
 		return MensagemSNGPC{}, err
 	}
 
