@@ -8,18 +8,15 @@ import (
 )
 
 func main() {
-
 	mysngpcmov, err := sngpc.MovimentoFromXMLPath(`mensagemSNGPC.sample.xml`)
-	if err == nil {
-		fmt.Printf("\n%s", &mysngpcmov)
-	} else {
+	if err != nil {
 		log.Panic(err)
 	}
+	fmt.Printf("\n%s", &mysngpcmov)
 
 	mysngpcinv, err := sngpc.InventarioFromXMLPath(`mensagemSNGPCInventario.sample.xml`)
-	if err == nil {
-		fmt.Printf("\n%s", &mysngpcinv)
-	} else {
+	if err != nil {
 		log.Panic(err)
 	}
+	fmt.Printf("\n%s", &mysngpcinv)
 }

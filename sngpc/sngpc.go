@@ -24,42 +24,28 @@ const (
 	Movimentacao
 )
 
-func InventarioFromXMLPath(f string) (MensagemSNGPCInventario, error) {
+func InventarioFromXMLPath(path string) (msg MensagemSNGPCInventario, err error) {
+	msg = MensagemSNGPCInventario{}
+	err = loadFromXMLPath(path, &msg)
 
-	xmlFile, err := os.Open(f)
-	if err != nil {
-		return MensagemSNGPCInventario{}, err
-	}
-
-	dec := xml.NewDecoder(xmlFile)
-	dec.CharsetReader = charset.NewReaderLabel
-	defer xmlFile.Close()
-
-	msg := MensagemSNGPCInventario{}
-
-	if err = dec.Decode(&msg); err != nil {
-		return MensagemSNGPCInventario{}, err
-	}
-
-	return msg, err
+	return
 }
 
-func MovimentoFromXMLPath(f string) (MensagemSNGPC, error) {
+func MovimentoFromXMLPath(path string) (msg MensagemSNGPC, err error) {
+	msg = MensagemSNGPC{}
+	err = loadFromXMLPath(path, &msg)
 
-	xmlFile, err := os.Open(f)
+	return
+}
+
+func loadFromXMLPath(path string, o interface{}) error {
+	f, err := os.Open(path)
 	if err != nil {
-		return MensagemSNGPC{}, err
+		return err
 	}
+	defer f.Close()
 
-	dec := xml.NewDecoder(xmlFile)
+	dec := xml.NewDecoder(f)
 	dec.CharsetReader = charset.NewReaderLabel
-	defer xmlFile.Close()
-
-	msg := MensagemSNGPC{}
-
-	if err = dec.Decode(&msg); err != nil {
-		return MensagemSNGPC{}, err
-	}
-
-	return msg, err
+	return dec.Decode(o)
 }
