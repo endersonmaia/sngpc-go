@@ -1,3 +1,7 @@
+// Com este pacote é possível importar arquivos XML no formato SNGPC 2.0
+// para trabalhar com seus valores. Deve ser possível exportar para CSV
+// com enfaze em vários tipos de movimentação.
+//
 package sngpc
 
 import (
