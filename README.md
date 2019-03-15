@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/endersonmaia/sngpc-go.svg?branch=master)](https://travis-ci.org/endersonmai/sngpc-go)
+
 # sngpc-go
 
 Este projeto tem por objetivo inicial criar um parser para o XML do SNGPC.
