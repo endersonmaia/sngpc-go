@@ -2,6 +2,7 @@ package sngpc
 
 import (
 	"encoding/xml"
+	"io"
 	"os"
 
 	"golang.org/x/net/html/charset"
@@ -45,7 +46,11 @@ func loadFromXMLPath(path string, o interface{}) error {
 	}
 	defer f.Close()
 
-	dec := xml.NewDecoder(f)
+	return fromXML(f, &o)
+}
+
+func fromXML(r io.Reader, o interface{}) error {
+	dec := xml.NewDecoder(r)
 	dec.CharsetReader = charset.NewReaderLabel
 	return dec.Decode(o)
 }
