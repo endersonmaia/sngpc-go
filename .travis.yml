@@ -1,6 +1,6 @@
 language: go
 sudo: false
-go: 
+go:
  - 1.8.x
  - 1.9.x
  - 1.10.x
@@ -9,6 +9,7 @@ go:
 before_install:
   - go get golang.org/x/net/html/charset
   - go get github.com/mattn/goveralls
+  - go get github.com/matryer/is
 
 script:
-  - $HOME/gopath/bin/goveralls -service=travis-ci  
+  - $HOME/gopath/bin/goveralls -service=travis-ci

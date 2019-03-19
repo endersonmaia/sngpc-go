@@ -3,9 +3,21 @@ package sngpc
 import (
 	"strings"
 	"testing"
+
+	"github.com/matryer/is"
 )
 
-var sngpcEntrada = `
+func TestFromXML(t *testing.T) {
+	is := is.New(t)
+
+	s := MensagemSNGPC{}
+	err := fromXML(strings.NewReader(msgSNGPCEntrada), &s)
+
+	is.NoErr(err)
+	is.Equal(s.Cabecalho.CnpjEmissor, "00000000000000")
+}
+
+var msgSNGPCEntrada = `
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <mensagemSNGPC xmlns="urn:sngpc-schema">
 	<cabecalho>
@@ -31,16 +43,8 @@ var sngpcEntrada = `
 				<quantidadeMedicamento>6</quantidadeMedicamento>
 				<unidadeMedidaMedicamento>1</unidadeMedidaMedicamento>
 			</medicamentoEntrada>
+			</entradaMedicamentos>
 		</medicamentos>
 	</corpo>
 </mensagemSNGPC>
 `
-
-func TestFromXML(t *testing.T) {
-	s := MensagemSNGPC{}
-	fromXML(strings.NewReader(sngpcEntrada), &s)
-
-	if s.Cabecalho.CnpjEmissor != "00000000000000" {
-		t.Errorf("MensagemSNGPC.Cabecalho.CnpjEmissor errado, got: %v, want: %v.", s.Cabecalho.CnpjEmissor, "00000000000000")
-	}
-}
