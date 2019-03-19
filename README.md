@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/endersonmaia/sngpc-go.svg?branch=master)](https://travis-ci.org/endersonmai/sngpc-go)
+[![Build Status](https://travis-ci.org/endersonmaia/sngpc-go.svg?branch=master)](https://travis-ci.org/endersonmaia/sngpc-go)
 
 # sngpc-go
 
