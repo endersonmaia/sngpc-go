@@ -12,11 +12,11 @@ import (
 
 const SNGPCXMLVersion = "2.0"
 
-type TipoMensagemSNGPC uint8
+type TipoMensagemSNGPC uint
 
 const (
-	Inventario TipoMensagemSNGPC = iota
-	Movimentacao
+	Movimentacao TipoMensagemSNGPC = iota + 1
+	Inventario
 )
 
 func InventarioFromXMLPath(path string) (msg MensagemSNGPCInventario, err error) {
