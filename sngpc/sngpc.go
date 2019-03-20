@@ -8,12 +8,6 @@ import (
 	"golang.org/x/net/html/charset"
 )
 
-func check(e error) {
-	if e != nil {
-		panic(e)
-	}
-}
-
 // http://portal.anvisa.gov.br/sngpc/desenvolvedores
 
 const SNGPCXMLVersion = "2.0"
