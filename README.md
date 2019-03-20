@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/endersonmaia/sngpc-go.svg?branch=master)](https://travis-ci.org/endersonmaia/sngpc-go)
+[![Build Status](https://travis-ci.org/endersonmaia/sngpc-go.svg?branch=master)](https://travis-ci.org/endersonmaia/sngpc-go) [![Coverage Status](https://coveralls.io/repos/github/endersonmaia/sngpc-go/badge.svg?branch=master)](https://coveralls.io/github/endersonmaia/sngpc-go?branch=master) [![Go Report Card](https://goreportcard.com/badge/github.com/endersonmaia/sngpc-go)](https://goreportcard.com/report/github.com/endersonmaia/sngpc-go) [![GoDoc](https://godoc.org/github.com/endersonmaia/sngpc-go?status.svg)]
 
 # sngpc-go
 
