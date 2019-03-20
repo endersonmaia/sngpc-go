@@ -1,8 +1,13 @@
 package sngpc
 
-import "fmt"
+import (
+	"encoding/xml"
+	"fmt"
+)
 
+// MensagemSNGPCInventario
 type MensagemSNGPCInventario struct {
+	XMLName   xml.Name            `xml:"mensagemSNGPCInventario"`
 	Cabecalho CabecalhoInventario `xml:"cabecalho"`
 	Corpo     CorpoInventario     `xml:"corpo"`
 }
