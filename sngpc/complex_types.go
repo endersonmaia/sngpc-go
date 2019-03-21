@@ -16,6 +16,30 @@ type Medicamento struct {
 	UnidadeMedidaMedicamento UnidadeMedidaMedicamento `xml:"unidadeMedidaMedicamento"`
 }
 
+//Medicamentos
+//<element name="medicamentos">
+// 	<complexType>
+// 	  <sequence>
+// 		<element name="entradaMedicamentos" type="sngpc:ct_EntradaMedicamento" minOccurs="0" maxOccurs="unbounded" />
+// 		<element name="saidaMedicamentoVendaAoConsumidor" type="sngpc:ct_SaidaMedicamentoVendaAoConsumidor" minOccurs="0" maxOccurs="unbounded" />
+// 		<element name="saidaMedicamentoTransferencia" type="sngpc:ct_SaidaMedicamentoTransferencia" minOccurs="0" maxOccurs="unbounded" />
+// 		<element name="saidaMedicamentoPerda" type="sngpc:ct_SaidaMedicamentoPerda" minOccurs="0" maxOccurs="unbounded" />
+// 		<element name="entradaMedicamentoTransformacao" type="sngpc:ct_EntradaMedicamentoTransformacao" minOccurs="0" maxOccurs="unbounded" />
+// 		<element name="saidaMedicamentoTransformacaoVendaAoConsumidor" type="sngpc:ct_SaidaMedicamentoTransformacaoVendaAoConsumidor" minOccurs="0" maxOccurs="unbounded" />
+// 		<element name="saidaMedicamentoTransformacaoPerda" type="sngpc:ct_SaidaMedicamentoTransformacaoPerda" minOccurs="0" maxOccurs="unbounded" />
+// 	  </sequence>
+// 	</complexType>
+//</element>
+type Medicamentos struct {
+	EntradaMedicamentos                            []EntradaMedicamentos                            `xml:"entradaMedicamentos"`
+	SaidaMedicamentoVendaAoConsumidor              []SaidaMedicamentoVendaAoConsumidor              `xml:"saidaMedicamentoVendaAoConsumidor"`
+	SaidaMedicamentoTransferencia                  []SaidaMedicamentoTransferencia                  `xml:"saidaMedicamentoTransferencia"`
+	SaidaMedicamentoPerda                          []SaidaMedicamentoPerda                          `xml:"saidaMedicamentoPerda"`
+	EntradaMedicamentoTransformacao                []EntradaMedicamentoTransformacao                `xml:"entradaMedicamentoTransformacao"`
+	SaidaMedicamentoTransformacaoVendaAoConsumidor []SaidaMedicamentoTransformacaoVendaAoConsumidor `xml:"saidaMedicamentoTransformacaoVendaAoConsumidor"`
+	SaidaMedicamentoTransformacaoPerda             []SaidaMedicamentoTransformacaoPerda             `xml:"saidaMedicamentoTransformacaoPerda"`
+}
+
 //MedicamentoVenda
 // <complexType name="ct_MedicamentoVenda">
 // <sequence>
@@ -28,6 +52,24 @@ type Medicamento struct {
 // </complexType>
 type MedicamentoVenda struct {
 	UsoProlongado            string                   `xml:"usoProlongado"`
+	RegistroMSMedicamento    string                   `xml:"registroMSMedicamento"`
+	NumeroLoteMedicamento    string                   `xml:"numeroLoteMedicamento"`
+	QuantidadeMedicamento    uint                     `xml:"quantidadeMedicamento"`
+	UnidadeMedidaMedicamento UnidadeMedidaMedicamento `xml:"unidadeMedidaMedicamento"`
+}
+
+//MedicamentoEntrada type struct
+// <complexType name="ct_MedicamentoEntrada">
+// <sequence>
+//   <element name="classeTerapeutica" type="sngpc:st_classeTerapeutica" />
+//   <element name="registroMSMedicamento" type="sngpc:st_RegistroMS" />
+//   <element name="numeroLoteMedicamento" type="sngpc:st_Lote" />
+//   <element name="quantidadeMedicamento" type="sngpc:st_QuantidadeMedicamento" />
+//   <element name="unidadeMedidaMedicamento" type="sngpc:st_UnidadeMedidaMedicamento" />
+// </sequence>
+// </complexType>
+type MedicamentoEntrada struct {
+	ClasseTerapeutica        ClasseTerapeutica        `xml:"classeTerapeutica"`
 	RegistroMSMedicamento    string                   `xml:"registroMSMedicamento"`
 	NumeroLoteMedicamento    string                   `xml:"numeroLoteMedicamento"`
 	QuantidadeMedicamento    uint                     `xml:"quantidadeMedicamento"`

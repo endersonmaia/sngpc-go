@@ -35,24 +35,6 @@ func (s CorpoInventario) String() string {
 	return fmt.Sprintf("Corpo : \n\nMedicamentos : \n%v\nInsumos : \n%v\n", s.Medicamentos, s.Insumos)
 }
 
-//MedicamentoEntrada type struct
-// <complexType name="ct_MedicamentoEntrada">
-// <sequence>
-//   <element name="classeTerapeutica" type="sngpc:st_classeTerapeutica" />
-//   <element name="registroMSMedicamento" type="sngpc:st_RegistroMS" />
-//   <element name="numeroLoteMedicamento" type="sngpc:st_Lote" />
-//   <element name="quantidadeMedicamento" type="sngpc:st_QuantidadeMedicamento" />
-//   <element name="unidadeMedidaMedicamento" type="sngpc:st_UnidadeMedidaMedicamento" />
-// </sequence>
-// </complexType>
-type MedicamentoEntrada struct {
-	ClasseTerapeutica        ClasseTerapeutica        `xml:"classeTerapeutica"`
-	RegistroMSMedicamento    string                   `xml:"registroMSMedicamento"`
-	NumeroLoteMedicamento    string                   `xml:"numeroLoteMedicamento"`
-	QuantidadeMedicamento    uint                     `xml:"quantidadeMedicamento"`
-	UnidadeMedidaMedicamento UnidadeMedidaMedicamento `xml:"unidadeMedidaMedicamento"`
-}
-
 func (s MedicamentoEntrada) String() string {
 	return fmt.Sprintf("RegistroMS : %v, Lote : %v, Quantidade : %v\n", s.RegistroMSMedicamento, s.NumeroLoteMedicamento, s.QuantidadeMedicamento)
 }
