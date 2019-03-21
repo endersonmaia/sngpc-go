@@ -1,5 +1,7 @@
 package sngpc
 
+import "fmt"
+
 type Medicamento struct {
 	RegistroMSMedicamento    string                   `xml:"registroMSMedicamento"`
 	NumeroLoteMedicamento    string                   `xml:"numeroLoteMedicamento"`
@@ -29,6 +31,16 @@ type Medicamentos struct {
 	EntradaMedicamentoTransformacao                []EntradaMedicamentoTransformacao                `xml:"entradaMedicamentoTransformacao"`
 	SaidaMedicamentoTransformacaoVendaAoConsumidor []SaidaMedicamentoTransformacaoVendaAoConsumidor `xml:"saidaMedicamentoTransformacaoVendaAoConsumidor"`
 	SaidaMedicamentoTransformacaoPerda             []SaidaMedicamentoTransformacaoPerda             `xml:"saidaMedicamentoTransformacaoPerda"`
+}
+
+func (s Medicamentos) String() string {
+	out := ""
+
+	for _, e := range s.EntradaMedicamentos {
+		out += fmt.Sprint(e.MedicamentoEntrada)
+	}
+
+	return out
 }
 
 //MedicamentoVenda
@@ -65,6 +77,10 @@ type MedicamentoEntrada struct {
 	NumeroLoteMedicamento    string                   `xml:"numeroLoteMedicamento"`
 	QuantidadeMedicamento    uint                     `xml:"quantidadeMedicamento"`
 	UnidadeMedidaMedicamento UnidadeMedidaMedicamento `xml:"unidadeMedidaMedicamento"`
+}
+
+func (s MedicamentoEntrada) String() string {
+	return fmt.Sprintf("RegistroMS : %v, Lote : %v, Quantidade : %v\n", s.RegistroMSMedicamento, s.NumeroLoteMedicamento, s.QuantidadeMedicamento)
 }
 
 //NotaFiscal

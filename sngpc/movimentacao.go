@@ -73,13 +73,3 @@ func (s Insumos) String() string {
 
 	return out
 }
-
-func (s Medicamentos) String() string {
-	out := ""
-
-	for _, e := range s.EntradaMedicamentos {
-		out += fmt.Sprint(e.MedicamentoEntrada)
-	}
-
-	return out
-}

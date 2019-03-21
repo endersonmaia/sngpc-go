@@ -39,10 +39,6 @@ func (s CorpoInventario) String() string {
 	return fmt.Sprintf("Corpo : \n\nMedicamentos : \n%v\nInsumos : \n%v\n", s.Medicamentos, s.Insumos)
 }
 
-func (s MedicamentoEntrada) String() string {
-	return fmt.Sprintf("RegistroMS : %v, Lote : %v, Quantidade : %v\n", s.RegistroMSMedicamento, s.NumeroLoteMedicamento, s.QuantidadeMedicamento)
-}
-
 // InsumoBasicoEntrada armazena os registros de entrada de insumos do inventário
 type InsumoBasicoEntrada struct {
 	ClasseTerapeutica    ClasseTerapeutica `xml:"classeTerapeutica"`
