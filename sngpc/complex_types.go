@@ -5,7 +5,7 @@ import "fmt"
 type Medicamento struct {
 	RegistroMSMedicamento    string                   `xml:"registroMSMedicamento"`
 	NumeroLoteMedicamento    string                   `xml:"numeroLoteMedicamento"`
-	QuantidadeMedicamento    string                   `xml:"quantidadeMedicamento"`
+	QuantidadeMedicamento    uint                     `xml:"quantidadeMedicamento"`
 	UnidadeMedidaMedicamento UnidadeMedidaMedicamento `xml:"unidadeMedidaMedicamento"`
 }
 
@@ -113,7 +113,7 @@ type MedicamentoSaidaTransformacao struct {
 type MedicamentoTransformacao struct {
 	RegistroMSMedicamento    string                   `xml:"registroMSMedicamento"`
 	NumeroLoteMedicamento    string                   `xml:"numeroLoteMedicamento"`
-	QuantidadeMedicamento    string                   `xml:"quantidadeMedicamento"`
+	QuantidadeMedicamento    uint                     `xml:"quantidadeMedicamento"`
 	UnidadeMedidaMedicamento UnidadeMedidaMedicamento `xml:"unidadeMedidaMedicamento"`
 	QuantidadeInsumo         float32                  `xml:"quantidadeInsumo"`
 	UnidadeDeMedidaDoInsumo  TipoUnidadeInsumo        `xml:"unidadeDeMedidaDoInsumo"`

@@ -9,11 +9,11 @@ type EntradaMedicamentos struct {
 
 // SaidaMedicamentoVendaAoConsumidor
 type SaidaMedicamentoVendaAoConsumidor struct {
-	TipoReceituarioMedicamento   uint8              `xml:"tipoReceituarioMedicamento"`
+	TipoReceituarioMedicamento   TipoReceituario    `xml:"tipoReceituarioMedicamento"`
 	NumeroNotificacaoMedicamento string             `xml:"numeroNotificacaoMedicamento"`
 	DataPrescricaoMedicamento    string             `xml:"dataPrescricaoMedicamento"`
 	PrescritorMedicamento        Prescritor         `xml:"prescritorMedicamento"`
-	UsoMedicamento               uint8              `xml:"usoMedicamento"`
+	UsoMedicamento               TipoUsoMedicamento `xml:"usoMedicamento"`
 	CompradorMedicamento         Comprador          `xml:"compradorMedicamento"`
 	PacienteMedicamento          Paciente           `xml:"pacienteMedicamento"`
 	MedicamentoVenda             []MedicamentoVenda `xml:"medicamentoVenda"`
@@ -65,7 +65,7 @@ type SaidaMedicamentoTransformacaoPerda struct {
 type EntradaInsumo struct {
 	NotaFiscalEntradaInsumo NotaFiscal            `xml:"notaFiscalEntradaInsumo"`
 	InsumoEntrada           []InsumoBasicoEntrada `xml:"insumoEntrada"`
-	dataRecebimentoInsumo   string                `xml:"dataRecebimentoInsumo"`
+	DataRecebimentoInsumo   string                `xml:"dataRecebimentoInsumo"`
 }
 
 // SaidaInsumoVenda

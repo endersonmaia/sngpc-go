@@ -92,7 +92,7 @@ func (s TipoOperacaoNotaFiscal) String() string {
 
 // ConselhoProfissional
 //
-//	"CRM" : "Conselho Regional de Medicida"
+//	"CRM" : "Conselho Regional de Medicina"
 //	"CRMV": "Conselho Regional de Medicina Veterinária"
 //	"CRO" : "Conselho Regional de Odontologia"
 //	"CRF" : "Conselho Regional de Farmácia"
@@ -100,7 +100,7 @@ func (s TipoOperacaoNotaFiscal) String() string {
 type ConselhoProfissional string
 
 var conselhoProfissional = map[ConselhoProfissional]string{
-	"CRM":  "Conselho Regional de Medicida",
+	"CRM":  "Conselho Regional de Medicina",
 	"CRMV": "Conselho Regional de Medicina Veterinária",
 	"CRO":  "Conselho Regional de Odontologia",
 	"CRF":  "Conselho Regional de Farmácia",

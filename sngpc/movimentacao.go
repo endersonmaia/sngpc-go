@@ -1,8 +1,10 @@
 package sngpc
 
 import (
+	"encoding/csv"
 	"encoding/xml"
 	"fmt"
+	"log"
 )
 
 // MensagemSNGPC armazena o conteúdo de um arquivo de movimentação do SNGPC
@@ -16,6 +18,137 @@ type MensagemSNGPC struct {
 
 func (s MensagemSNGPC) String() string {
 	return fmt.Sprintf("%v\n%v", s.Cabecalho, s.Corpo)
+}
+
+// VendasToCSV formata a operação SaidaMedicamentoVendaAoConsumidor
+func (s MensagemSNGPC) VendasToCSV(w *csv.Writer) error {
+	header := []string{
+		"tipoReceituarioMedicamento",
+		"numeroNotificacaoMedicamento",
+		"dataPrescricaoMedicamento",
+		"nomePrescritor",
+		"numeroRegistroProfissionalPrescritor",
+		"conselhoProfissionalPrescritor",
+		"UFConselhoPrescritor",
+		"usoMedicamento",
+		"nomeComprador",
+		"tipoDocumentoComprador",
+		"numeroDocumentoComprador",
+		"orgaoExpedidorComprador",
+		"UFEmissaoDocumentoComprador",
+		"nomePaciente",
+		"idadePaciente",
+		"unidadeIdadePaciente",
+		"sexoPaciente",
+		"cidPaciente",
+		"usoProlongadoMedicamento",
+		"registroMSMedicamento",
+		"numeroLoteMedicamento",
+		"quantidadeMedicamento",
+		"unidadeMedidaMedicamento",
+		"dataVendaMedicamento",
+	}
+
+	err := w.Write(header)
+	if err != nil {
+		log.Panic(err)
+		return err
+	}
+
+	for _, v := range s.Corpo.Medicamentos.SaidaMedicamentoVendaAoConsumidor {
+		for _, m := range v.MedicamentoVenda {
+			r := []string{
+				v.TipoReceituarioMedicamento.String(),
+				v.NumeroNotificacaoMedicamento,
+				v.DataPrescricaoMedicamento,
+				v.PrescritorMedicamento.NomePrescritor,
+				v.PrescritorMedicamento.NumeroRegistroProfissional,
+				v.PrescritorMedicamento.ConselhoProfissional.String(),
+				v.PrescritorMedicamento.UFConselho.String(),
+				v.UsoMedicamento.String(),
+				v.CompradorMedicamento.NomeComprador,
+				v.CompradorMedicamento.TipoDocumento.String(),
+				v.CompradorMedicamento.NumeroDocumento,
+				v.CompradorMedicamento.UFEmissaoDocumento.String(),
+				v.PacienteMedicamento.Nome,
+				v.PacienteMedicamento.Idade,
+				v.PacienteMedicamento.UnidadeIdade.String(),
+				v.PacienteMedicamento.Sexo.String(),
+				v.PacienteMedicamento.Cid,
+				m.UsoProlongado,
+				m.RegistroMSMedicamento,
+				m.NumeroLoteMedicamento,
+				string(m.QuantidadeMedicamento),
+				m.UnidadeMedidaMedicamento.String(),
+				v.DataVendaMedicamento,
+			}
+
+			w.Write(r)
+		}
+	}
+
+	w.Flush()
+
+	return nil
+}
+
+// VendasToCSVAnonymized formata a operação SaidaMedicamentoVendaAoConsumidor
+func (s MensagemSNGPC) VendasToCSVAnonymized(w *csv.Writer) error {
+	header := []string{
+		"tipoReceituarioMedicamento",
+		"numeroNotificacaoMedicamento",
+		"dataPrescricaoMedicamento",
+		"conselhoProfissionalPrescritor",
+		"UFConselhoPrescritor",
+		"usoMedicamento",
+		"UFEmissaoDocumentoComprador",
+		"idadePaciente",
+		"unidadeIdadePaciente",
+		"sexoPaciente",
+		"cidPaciente",
+		"usoProlongadoMedicamento",
+		"registroMSMedicamento",
+		"numeroLoteMedicamento",
+		"quantidadeMedicamento",
+		"unidadeMedidaMedicamento",
+		"dataVendaMedicamento",
+	}
+
+	err := w.Write(header)
+	if err != nil {
+		log.Panic(err)
+		return err
+	}
+
+	for _, v := range s.Corpo.Medicamentos.SaidaMedicamentoVendaAoConsumidor {
+		for _, m := range v.MedicamentoVenda {
+			r := []string{
+				v.TipoReceituarioMedicamento.String(),
+				v.NumeroNotificacaoMedicamento,
+				v.DataPrescricaoMedicamento,
+				v.PrescritorMedicamento.ConselhoProfissional.String(),
+				v.PrescritorMedicamento.UFConselho.String(),
+				v.UsoMedicamento.String(),
+				v.CompradorMedicamento.UFEmissaoDocumento.String(),
+				v.PacienteMedicamento.Idade,
+				v.PacienteMedicamento.UnidadeIdade.String(),
+				v.PacienteMedicamento.Sexo.String(),
+				v.PacienteMedicamento.Cid,
+				m.UsoProlongado,
+				m.RegistroMSMedicamento,
+				m.NumeroLoteMedicamento,
+				string(m.QuantidadeMedicamento),
+				m.UnidadeMedidaMedicamento.String(),
+				v.DataVendaMedicamento,
+			}
+
+			w.Write(r)
+		}
+	}
+
+	w.Flush()
+
+	return nil
 }
 
 // CabecalhoMovimentacao armazena informações da movimentação
