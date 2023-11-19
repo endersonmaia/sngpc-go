@@ -1,3 +1,7 @@
+// Com este pacote é possível importar arquivos XML no formato SNGPC 2.0
+// para trabalhar com seus valores. Deve ser possível exportar para CSV
+// com enfaze em vários tipos de movimentação.
+//
 package sngpc
 
 import (
@@ -8,8 +12,8 @@ import (
 	"golang.org/x/net/html/charset"
 )
 
-// http://portal.anvisa.gov.br/sngpc/desenvolvedores
-
+// SNGPCXMLVersion armazena a versão do XML do SNGPC
+// Ver: http://portal.anvisa.gov.br/sngpc/desenvolvedores
 const SNGPCXMLVersion = "2.0"
 
 type TipoMensagemSNGPC uint
@@ -19,6 +23,7 @@ const (
 	Inventario
 )
 
+// InventarioFromXMLPath lê o conteúdo de um XML SNGPC do tipo `MensagemSNGPCInventario`
 func InventarioFromXMLPath(path string) (msg MensagemSNGPCInventario, err error) {
 	msg = MensagemSNGPCInventario{}
 	err = loadFromXMLPath(path, &msg)
@@ -26,6 +31,7 @@ func InventarioFromXMLPath(path string) (msg MensagemSNGPCInventario, err error)
 	return
 }
 
+// MovimentoFromXMLPath lê o conteúdo de um XML SNGPC do tipo `MensagemSNGPC`
 func MovimentoFromXMLPath(path string) (msg MensagemSNGPC, err error) {
 	msg = MensagemSNGPC{}
 	err = loadFromXMLPath(path, &msg)
