@@ -5,7 +5,9 @@ import (
 	"fmt"
 )
 
-// MensagemSNGPCInventario
+// MensagemSNGPCInventario armazena o conteúdo de um arquivo de inventário do SNGPC
+// O arquivo de inventário contém uma data de referência e os registros de inventário
+// para medicamentos e insumos
 type MensagemSNGPCInventario struct {
 	XMLName   xml.Name            `xml:"mensagemSNGPCInventario"`
 	Cabecalho CabecalhoInventario `xml:"cabecalho"`
@@ -16,6 +18,7 @@ func (s MensagemSNGPCInventario) String() string {
 	return fmt.Sprintf("%v\n%v", s.Cabecalho, s.Corpo)
 }
 
+// CabecalhoInventario armazena informações do arquivo de inventário
 type CabecalhoInventario struct {
 	CnpjEmissor    string `xml:"cnpjEmissor"`
 	CpfTransmissor string `xml:"cpfTransmissor"`
@@ -26,6 +29,7 @@ func (s CabecalhoInventario) String() string {
 	return fmt.Sprintf("Inventário :\n\nCNPJ : %v ; CPF : %v ; Data : %v\n", s.CnpjEmissor, s.CpfTransmissor, s.Data)
 }
 
+// CorpoInventario armazena informações dos registros de inventário
 type CorpoInventario struct {
 	Medicamentos Medicamentos `xml:"medicamentos"`
 	Insumos      Insumos      `xml:"insumos"`
@@ -35,21 +39,7 @@ func (s CorpoInventario) String() string {
 	return fmt.Sprintf("Corpo : \n\nMedicamentos : \n%v\nInsumos : \n%v\n", s.Medicamentos, s.Insumos)
 }
 
-func (s MedicamentoEntrada) String() string {
-	return fmt.Sprintf("RegistroMS : %v, Lote : %v, Quantidade : %v\n", s.RegistroMSMedicamento, s.NumeroLoteMedicamento, s.QuantidadeMedicamento)
-}
-
-//InsumoBasicoEntrada
-// <complexType name="ct_InsumoBasicoEntrada">
-// <sequence>
-//   <element name="classeTerapeutica" type="sngpc:st_classeTerapeutica" />
-//   <element name="codigoInsumo" type="sngpc:st_CodigoDCB" />
-//   <element name="numeroLoteInsumo" type="sngpc:st_Lote" />
-//   <element name="insumoCNPJFornecedor" type="sngpc:st_CNPJ" />
-//   <element name="quantidadeInsumo" type="sngpc:st_QuantidadeInsumo" />
-//   <element name="tipoUnidade" type="sngpc:st_TipoUnidadeInsumo" />
-// </sequence>
-// </complexType>
+// InsumoBasicoEntrada armazena os registros de entrada de insumos do inventário
 type InsumoBasicoEntrada struct {
 	ClasseTerapeutica    ClasseTerapeutica `xml:"classeTerapeutica"`
 	CodigoInsumo         string            `xml:"codigoInsumo"`
