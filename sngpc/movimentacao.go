@@ -5,7 +5,9 @@ import (
 	"fmt"
 )
 
-// MensagemSNGPC
+// MensagemSNGPC armazena o conteúdo de um arquivo de movimentação do SNGPC
+// O arquivo contem informações da movimentação de medicamentos e insumos
+// de um determinado período
 type MensagemSNGPC struct {
 	XMLName   xml.Name              `xml:"mensagemSNGPC"`
 	Cabecalho CabecalhoMovimentacao `xml:"cabecalho"`
@@ -16,15 +18,7 @@ func (s MensagemSNGPC) String() string {
 	return fmt.Sprintf("%v\n%v", s.Cabecalho, s.Corpo)
 }
 
-//CabecalhoMovimentacao
-// <complexType>
-// <sequence>
-//   <element name="cnpjEmissor" type="sngpc:st_CNPJ" />
-//   <element name="cpfTransmissor" type="sngpc:st_CPF" />
-//   <element name="dataInicio" type="sngpc:st_data" />
-//   <element name="dataFim" type="sngpc:st_data" />
-// </sequence>
-// </complexType>
+// CabecalhoMovimentacao armazena informações da movimentação
 type CabecalhoMovimentacao struct {
 	CnpjEmissor    string `xml:"cnpjEmissor"`
 	CpfTransmissor string `xml:"cpfTransmissor"`
@@ -36,7 +30,6 @@ func (s CabecalhoMovimentacao) String() string {
 	return fmt.Sprintf("cnpj : %v ; cpf : %v ; inicio : %v, fim : %v\n", s.CnpjEmissor, s.CpfTransmissor, s.DataInicio, s.DataFim)
 }
 
-//Corpo
 type CorpoMovimentacao struct {
 	Medicamentos Medicamentos `xml:"medicamentos"`
 	Insumos      Insumos      `xml:"insumos"`
@@ -63,17 +56,7 @@ func (s CorpoMovimentacao) String() string {
 	return out
 }
 
-//Insumos
-// <element name="insumos">
-// <complexType>
-//   <sequence>
-// 	<element name="entradaInsumos" type="sngpc:ct_EntradaInsumo" minOccurs="0" maxOccurs="unbounded" />
-// 	<element name="saidaInsumoVendaAoConsumidor" type="sngpc:ct_SaidaInsumoVenda" minOccurs="0" maxOccurs="unbounded" />
-// 	<element name="saidaInsumoTransferencia" type="sngpc:ct_SaidaInsumoTransferencia" minOccurs="0" maxOccurs="unbounded" />
-// 	<element name="saidaInsumoPerda" type="sngpc:ct_SaidaInsumoPerda" minOccurs="0" maxOccurs="unbounded" />
-//   </sequence>
-// </complexType>
-// </element>
+// Insumos armazena os diversos tipos de movimentações de insumos
 type Insumos struct {
 	EntradaInsumos               []EntradaInsumo            `xml:"entradaInsumos"`
 	SaidaInsumoVendaAoConsumidor []SaidaInsumoVenda         `xml:"saidaInsumoVendaAoConsumidor"`
